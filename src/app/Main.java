@@ -1,10 +1,10 @@
 package app;
 
-import views.MenuInventario;
+import views.MenuUsuario;
 
 public class Main {
     public static void main(String[] args) {
-        new MenuInventario().mostrarMenu();
+        new MenuUsuario().InterfazUsuario();
         System.out.println("inicio");
     }
 }
