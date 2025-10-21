@@ -11,7 +11,9 @@ public class MenuUsuario {
     public void InterfazUsuario() {
         String usuario, password;
 
+        System.out.println("=============================");
         System.out.println("\n===== Incio de sesion =====");
+        System.out.println("=============================");
 
         System.out.println("Ingrese usuario: ");
         usuario = scanner.nextLine();

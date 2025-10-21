@@ -1,10 +1,11 @@
 package services;
 
-import models.Producto;
 import java.util.ArrayList;
 import java.util.List;
+import models.Producto;
 
 public class InventarioService {
+
     private List<Producto> productos = new ArrayList<>();
 
     public void agregarProducto(Producto p) {
@@ -29,4 +30,6 @@ public class InventarioService {
         }
         return false;
     }
+
+    // todo: crear funciones para el CRUD con archivos 
 }

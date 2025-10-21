@@ -4,6 +4,7 @@ import controllers.InventarioController;
 import java.util.Scanner;
 
 public class MenuInventario {
+
     private Scanner scanner = new Scanner(System.in);
     private InventarioController controller = new InventarioController();
 
@@ -19,12 +20,19 @@ public class MenuInventario {
             opcion = Integer.parseInt(scanner.nextLine());
 
             switch (opcion) {
-                case 1 -> controller.agregarProducto();
-                case 2 -> controller.listarProductos();
-                case 3 -> controller.eliminarProducto();
-                case 4 -> System.out.println("👋 Saliendo...");
-                default -> System.out.println("❌ Opción inválida");
+                case 1 ->
+                    controller.agregarProducto();
+                case 2 ->
+                    controller.listarProductos();
+                case 3 ->
+                    controller.eliminarProducto();
+                case 4 ->
+                    System.out.println("👋 Saliendo...");
+                default ->
+                    System.out.println("❌ Opción inválida");
             }
         } while (opcion != 4);
+
     }
+
 }
