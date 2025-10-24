@@ -1,10 +1,10 @@
 package views;
 
+import controllers.UsuarioController;
 import java.util.Scanner;
 
-import controllers.UsuarioController;
-
 public class MenuUsuario {
+
     private Scanner scanner = new Scanner(System.in);
     private UsuarioController controller = new UsuarioController();
 
@@ -12,7 +12,7 @@ public class MenuUsuario {
         String usuario, password;
 
         System.out.println("=============================");
-        System.out.println("\n===== Incio de sesion =====");
+        System.out.println("====== Incio de sesion ======");
         System.out.println("=============================");
 
         System.out.println("Ingrese usuario: ");
@@ -22,4 +22,5 @@ public class MenuUsuario {
 
         controller.IniciarSesion(usuario, password);
     }
+
 }

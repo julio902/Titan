@@ -2,7 +2,9 @@ package utils;
 
 import java.util.regex.Pattern;
 
+
 public class UsuarioValidators {
+    // 
     
     public static boolean validarCorreo(String correo) {
         // Expresión regular básica para validar formato de correo********
