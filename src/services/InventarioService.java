@@ -36,5 +36,15 @@ public class InventarioService {
         }
         return false;
     }
+    // Nueva función para buscar producto por código
+    public Producto buscarProductoPorCodigo(String codigo) {
+        for (Producto p : productos) {
+            if (p.getCodigo().equalsIgnoreCase(codigo)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
 }
 

@@ -13,6 +13,7 @@ public class Producto {
         this.precio = precio;
     }
 
+    // Getters para acceder a los datos 
     public String getCodigo() {
         return codigo;
     }
@@ -27,6 +28,19 @@ public class Producto {
 
     public double getPrecio() {
         return precio;
+    }
+
+    // Setters para modificar los datos la guardados en la lista 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 
     @Override
