@@ -1,17 +1,31 @@
 package services;
 
-import java.util.ArrayList;
 import java.util.List;
 import models.Usuario;
+import utils.FileUtils;
 
 public class UsuarioService {
-    private List<Usuario> usuarios = new ArrayList<>();
+    private List<Usuario> usuarios;
 
-    void constructor(){
-        usuarios.add(new Usuario("admin@confectex.com", "prueba123"));
+    public UsuarioService() {
+        usuarios = FileUtils.cargarUsuarios();
     }
 
-    public void agregarUsuario(Usuario p) {
-        usuarios.add(p);
+    public Usuario verificarUsuario(String user, String password) {
+        for (Usuario u : usuarios) {
+            if (u.getUser().equalsIgnoreCase(user) && u.getPassword().equals(password)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public void registrarUsuario(Usuario nuevo) {
+        usuarios.add(nuevo);
+        FileUtils.guardarUsuarios(usuarios);
+    }
+
+    public List<Usuario> listarUsuarios() {
+        return usuarios;
     }
 }

@@ -16,6 +16,7 @@ public class MenuInventario {
             System.out.println("[3] Eliminar producto");
             System.out.println("[4] Modificar producto");
             System.out.println("[5] Salir");
+            System.out.println("=================================");
             System.out.print("Seleccione una opción: ");
             opcion = Integer.parseInt(scanner.nextLine());
 

@@ -1,22 +1,23 @@
 package controllers;
 
-import utils.UsuarioValidators;
+import models.Usuario;
+import services.UsuarioService;
 
 public class UsuarioController {
+    private UsuarioService service = new UsuarioService();
 
-    public void IniciarSesion(String usuario, String password) {
-        boolean isValidEmail = UsuarioValidators.validarCorreo(usuario);
+    public Usuario verificarUsuario(String user, String password) {
+        return service.verificarUsuario(user, password);
+    }
 
-        if (!isValidEmail) {
-            System.out.println("Correo Invalido");
-            return;
-        }
-        boolean isValidPassword = UsuarioValidators.validarContrasena(password);
+    public void registrarUsuario(Usuario nuevo) {
+        service.registrarUsuario(nuevo);
+        System.out.println("✅ Usuario registrado correctamente.");
+    }
 
-        if (!isValidPassword) {
-            System.out.println("Contrasena Invalida");
-            return;
+    public void listarUsuarios() {
+        for (Usuario u : service.listarUsuarios()) {
+            System.out.println(u);
         }
     }
-    
 }

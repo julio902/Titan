@@ -1,10 +1,9 @@
 package app;
 
-import views.MenuUsuario;
+import views.MenuLogin;
 
 public class Main {
-
     public static void main(String[] args) {
-        new MenuUsuario().InterfazUsuario();
+        new MenuLogin().mostrarLogin();
     }
 }

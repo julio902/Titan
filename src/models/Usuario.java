@@ -3,19 +3,20 @@ package models;
 public class Usuario {
     private String user;
     private String password;
-   
-    public Usuario(String user, String password) {
+    private String rol;
+
+    public Usuario(String user, String password, String rol) {
         this.user = user;
         this.password = password;
-        
-    }
-     public String getUser() {
-        return user;
+        this.rol = rol;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUser() { return user; }
+    public String getPassword() { return password; }
+    public String getRol() { return rol; }
+
+    @Override
+    public String toString() {
+        return user + " - Rol: " + rol;
     }
-
-
 }

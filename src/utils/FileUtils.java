@@ -1,35 +1,32 @@
 package utils;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import models.Producto;
+import models.Usuario;
 
 public class FileUtils {
-    private static final String FILE_PATH = "productos.txt";
+    private static final String FILE_PRODUCTOS = "productos.txt";
+    private static final String FILE_USUARIOS = "usuarios.txt";
 
-    // 🔹 Guardar lista completa en el archivo
+    // =================== PRODUCTOS ===================
     public static void guardarProductos(List<Producto> productos) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PRODUCTOS))) {
             for (Producto p : productos) {
                 writer.write(p.getCodigo() + ";" + p.getNombre() + ";" + p.getCantidad() + ";" + p.getPrecio());
                 writer.newLine();
             }
         } catch (IOException e) {
-            System.out.println("⚠️ Error al guardar los productos: " + e.getMessage());
+            System.out.println("⚠️ Error al guardar productos: " + e.getMessage());
         }
     }
 
-    // 🔹 Cargar productos desde el archivo (si existe)
     public static List<Producto> cargarProductos() {
         List<Producto> productos = new ArrayList<>();
+        File archivo = new File(FILE_PRODUCTOS);
+        if (!archivo.exists()) return productos;
 
-        File archivo = new File(FILE_PATH);
-        if (!archivo.exists()) {
-            return productos; // retorna lista vacía si no hay archivo
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PRODUCTOS))) {
             String linea;
             while ((linea = reader.readLine()) != null) {
                 String[] datos = linea.split(";");
@@ -42,9 +39,46 @@ public class FileUtils {
                 }
             }
         } catch (IOException e) {
-            System.out.println("⚠️ Error al cargar los productos: " + e.getMessage());
+            System.out.println("⚠️ Error al cargar productos: " + e.getMessage());
+        }
+        return productos;
+    }
+
+    // =================== USUARIOS ===================
+    public static void guardarUsuarios(List<Usuario> usuarios) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_USUARIOS))) {
+            for (Usuario u : usuarios) {
+                writer.write(u.getUser() + ";" + u.getPassword() + ";" + u.getRol());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("⚠️ Error al guardar usuarios: " + e.getMessage());
+        }
+    }
+
+    public static List<Usuario> cargarUsuarios() {
+        List<Usuario> usuarios = new ArrayList<>();
+        File archivo = new File(FILE_USUARIOS);
+        if (!archivo.exists()) {
+            // Crear usuarios por defecto
+            usuarios.add(new Usuario("admin", "123", "administrador"));
+            usuarios.add(new Usuario("almacen", "123", "almacenista"));
+            usuarios.add(new Usuario("vendedor", "123", "vendedor"));
+            guardarUsuarios(usuarios);
+            return usuarios;
         }
 
-        return productos;
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_USUARIOS))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String[] datos = linea.split(";");
+                if (datos.length == 3) {
+                    usuarios.add(new Usuario(datos[0], datos[1], datos[2]));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("⚠️ Error al cargar usuarios: " + e.getMessage());
+        }
+        return usuarios;
     }
 }
