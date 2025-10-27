@@ -12,7 +12,7 @@ public class InventarioService {
         productos = FileUtils.cargarProductos();
     }
 
-    public void agregarProducto(Producto p) {
+    public void agregarProducto(Producto p) { // agregar producto******
         productos.add(p);
         FileUtils.guardarProductos(productos); //  Guardar al agregar
     }
@@ -21,7 +21,7 @@ public class InventarioService {
         return productos;
     }
 
-    public boolean eliminarProducto(String codigo) {
+    public boolean eliminarProducto(String codigo) { // eliminar producto *****
         Producto encontrado = null;
         for (Producto p : productos) {
             if (p.getCodigo().equalsIgnoreCase(codigo)) {
@@ -36,14 +36,28 @@ public class InventarioService {
         }
         return false;
     }
-    // Nueva función para buscar producto por código
-    public Producto buscarProductoPorCodigo(String codigo) {
+    
+    public Producto buscarProductoPorCodigo(String codigo) {  // Nueva función para buscar producto por código
         for (Producto p : productos) {
             if (p.getCodigo().equalsIgnoreCase(codigo)) {
                 return p;
             }
         }
         return null;
+    }
+    // método para modificar producto***********
+    public boolean modificarProducto(String codigo, String nuevoNombre, int nuevaCantidad, double nuevoPrecio) {
+        for (int i = 0; i < productos.size(); i++) {
+            Producto p = productos.get(i);
+            if (p.getCodigo().equalsIgnoreCase(codigo)) {
+                // Creamos un nuevo objeto actualizado
+                Producto actualizado = new Producto(codigo, nuevoNombre, nuevaCantidad, nuevoPrecio);
+                productos.set(i, actualizado); // reemplazamos el anterior
+                FileUtils.guardarProductos(productos); // guardamos cambios
+                return true;
+            }
+        }
+        return false;
     }
 
 }
