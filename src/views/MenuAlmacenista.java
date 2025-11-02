@@ -27,5 +27,7 @@ public class MenuAlmacenista {
                 default -> System.out.println("Opción no válida.");
             }
         } while (opcion != 4);
+           System.out.println("Regresando a la pantalla de inicio de sesión.");
+           new MenuLogin().mostrarLogin();
     }
 }
