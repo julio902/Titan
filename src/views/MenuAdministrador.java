@@ -31,6 +31,8 @@ public class MenuAdministrador {
                 default -> System.out.println("Opción no válida");
             }
         } while (opcion != 3);
+             System.out.println("Regresando a la pantalla de inicio de sesión.");
+             new MenuLogin().mostrarLogin();
     }
 
     // Lista de usuarios registrados en el sistema 
