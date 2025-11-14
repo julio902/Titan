@@ -1,7 +1,7 @@
 package views;
 
-import java.util.Scanner;
 import controllers.InventarioController;
+import java.util.Scanner;
 import models.Usuario;
 
 public class MenuVendedor {
@@ -11,9 +11,9 @@ public class MenuVendedor {
     public void mostrarMenu(Usuario vendedor) {
         int opcion;
         do {
-            System.out.println("=== MENÚ VENDEDOR ===");
-            System.out.println("1. Ver stock de productos");
-            System.out.println("2. Salir");
+            System.out.println("\n=== === === MENÚ VENDEDOR === === ===");
+            System.out.println("\t[1] Ver stock de productos");
+            System.out.println("\t[2] Salir");
             System.out.print("Seleccione una opción: ");
             opcion = Integer.parseInt(scanner.nextLine());
 

@@ -1,6 +1,7 @@
 package views;
 
 import controllers.UsuarioController;
+import java.util.List;
 import java.util.Scanner;
 import models.Usuario;
 
@@ -8,53 +9,74 @@ public class MenuAdministrador {
     private final Scanner scanner = new Scanner(System.in);
     private final UsuarioController usuarioController = new UsuarioController();
 
-    public void mostrarMenu(Usuario admin) {
+    // Este es el método que llamará MenuLogin
+    public void mostrar() {
         int opcion;
         do {
-            System.out.println("=== MENÚ ADMINISTRADOR ===");
-            System.out.println("1. Registrar nuevo usuario");
-            System.out.println("2. Listar usuarios");
-            System.out.println("3. Salir");
+            System.out.println("\n=== === === MENÚ ADMINISTRADOR === === ===");
+            System.out.println("\t[1] Registrar nuevo usuario");
+            System.out.println("\t[2] Listar usuarios");
+            System.out.println("\t[3] Regresar al Menu Anterior");
+            System.out.println("=============================================");
             System.out.print("Seleccione una opción: ");
             opcion = Integer.parseInt(scanner.nextLine());
 
             switch (opcion) {
                 case 1 -> registrarUsuario();
-                case 2 -> usuarioController.listarUsuarios();
-                case 3 -> System.out.println("Saliendo...");
+                case 2 -> mostrarUsuarios();
+                case 3 -> {
+                    System.out.println("Volviendo al Menu Anterior...");
+                    return;
+                }
                 default -> System.out.println("Opción no válida");
             }
         } while (opcion != 3);
     }
 
+    // Lista de usuarios registrados en el sistema 
+    private void mostrarUsuarios() {
+        List<Usuario> lista = usuarioController.obtenerUsuarios();
+
+        if (lista.isEmpty()) {
+            System.out.println("No hay usuarios registrados.");
+            return;
+        }
+
+        System.out.println("\n=== LISTA DE USUARIOS ===");
+        for (Usuario u : lista) {
+            System.out.println("- " + u.getUser() + "\t| Rol: \t" + u.getRol());
+        }
+    }
+    // registro de usuarios 
     private void registrarUsuario() {
-    System.out.print("Nuevo usuario: ");
-    String user = scanner.nextLine();
 
-    System.out.print("Contraseña: ");
-    String password = scanner.nextLine();
+        System.out.print("Nuevo usuario: ");
+        String user = scanner.nextLine();
 
-    System.out.println("\nSeleccione el rol del nuevo usuario:");
-    System.out.println("1. Administrador");
-    System.out.println("2. Almacenista");
-    System.out.println("3. Vendedor");
-    System.out.print("Opción: ");
+        System.out.print("Contraseña: ");
+        String password = scanner.nextLine();
 
-    String opcion = scanner.nextLine();
-    String rol = "";
+        System.out.println("\nSeleccione el rol del nuevo usuario:");
+        System.out.println("\t[1] Administrador");
+        System.out.println("\t[2] Almacenista");
+        System.out.println("\t[3] Vendedor");
+        System.out.print("Opción: ");
 
+        String opcion = scanner.nextLine();
+        String rol = "";
+
+        // Eleccion de roles 
         switch (opcion) {
             case "1" -> rol = "administrador";
             case "2" -> rol = "almacenista";
             case "3" -> rol = "vendedor";
             default -> {
-                System.out.println("⚠️ Opción inválida. No se registró el usuario.");
+                System.out.println(" Opción inválida. No se registró el usuario.");
                 return;
             }
         }
 
         usuarioController.registrarUsuario(new Usuario(user, password, rol));
-        System.out.println("✅ Usuario registrado correctamente con rol: " + rol);
+        System.out.println("Usuario registrado correctamente con rol: " + rol);
     }
-
 }

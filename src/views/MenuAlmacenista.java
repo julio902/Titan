@@ -1,7 +1,7 @@
 package views;
 
-import java.util.Scanner;
 import controllers.InventarioController;
+import java.util.Scanner;
 import models.Usuario;
 
 public class MenuAlmacenista {
@@ -11,11 +11,11 @@ public class MenuAlmacenista {
     public void mostrarMenu(Usuario almacenista) {
         int opcion;
         do {
-            System.out.println("=== MENÚ ALMACENISTA ===");
-            System.out.println("1. Agregar producto");
-            System.out.println("2. Eliminar producto");
-            System.out.println("3. Listar productos");
-            System.out.println("4. Salir");
+            System.out.println("\n=== === === MENÚ ALMACENISTA === === ===");
+            System.out.println("\t[1] Agregar producto");
+            System.out.println("\t[2] Eliminar producto");
+            System.out.println("\t[3] Listar productos");
+            System.out.println("\t[4] Salir");
             System.out.print("Seleccione una opción: ");
             opcion = Integer.parseInt(scanner.nextLine());
 

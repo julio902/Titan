@@ -8,70 +8,93 @@ public class InventarioController {
     private  InventarioService service = new InventarioService();
     private  Scanner scanner = new Scanner(System.in);
 
-    public void agregarProducto() { // agregar producctos***********
+    public void agregarProducto() { // Agregar producto 
+
+        System.out.println("\n=== === === AGREGAR PRODUCTO === === ===");
+
+        // Código automático
+        String codigo = service.generarCodigo();
         
-        System.out.print("Código: ");
-        String codigo = scanner.nextLine();
+
+        // Nombre producto
         System.out.print("Nombre: ");
-        String nombre = scanner.nextLine();
-        System.out.print("Cantidad: ");
-        int cantidad = Integer.parseInt(scanner.nextLine());
-        System.out.print("Precio: ");
-        double precio = Double.parseDouble(scanner.nextLine());
-
-        Producto producto = new Producto(codigo, nombre, cantidad, precio);
-        service.agregarProducto(producto); // agrega el producto nuevo 
-        System.out.println("Producto agregado correctamente.");
-    }
-    
-
-    public void listarProductos() {  // lista los productos que ya estan guardados
-        System.out.println("=== Lista de Productos ===");
-        for (Producto p : service.listarProductos()) {  // recorre la lista de producto y cada posiscion la guarda en la variable p
-            System.out.println(p); // muestra cada elemento de la lista guardado 
-        }
-    }
-    
-
-    public void eliminarProducto() {  //eliminar producto***
-        System.out.print("Ingrese el código del producto a eliminar: ");
-        String codigo = scanner.nextLine();
-        if (service.eliminarProducto(codigo)) {
-            System.out.println(" Producto eliminado.");
-        } else {
-            System.out.println(" No se encontró el producto.");
-        }
-    }
-
-    public void modificarProducto() { // modificar producto ***** 
-        System.out.print("Ingrese el código del producto a modificar: ");
-        String codigo = scanner.nextLine();
-        Producto p = service.buscarProductoPorCodigo(codigo);
-            // P guarda el producto que encontro 
-        if (p == null) {
-            System.out.println("❌ No se encontró el producto con ese código.");
+        String nombre = scanner.nextLine().trim();
+        if (nombre.isEmpty()) {
+            System.out.println("El nombre no puede estar vacío.");
             return;
         }
 
-        System.out.println("Producto encontrado: " + p);
-        System.out.print("Nuevo nombre (enter para mantener): ");
-        String nuevoNombre = scanner.nextLine();
-        System.out.print("Nueva cantidad (enter para mantener): ");
-        String nuevaCant = scanner.nextLine();
-        System.out.print("Nuevo precio (enter para mantener): ");
-        String nuevoPrecio = scanner.nextLine();
+        // descripcion del procducto 
+        System.out.print("Descripcion: ");
+        String descripcion = scanner.nextLine().trim();
+        if (descripcion.isEmpty()) {
+            System.out.println("La Descripcion no puede estar vacía.");
+            return;
+        }
 
-        // Si el usuario deja el campo vacío, se conserva el valor anterior
-        String nombreFinal = nuevoNombre.isEmpty() ? p.getNombre() : nuevoNombre; //operador ternario
-        int cantidadFinal = nuevaCant.isEmpty() ? p.getCantidad() : Integer.parseInt(nuevaCant);
-        double precioFinal = nuevoPrecio.isEmpty() ? p.getPrecio() : Double.parseDouble(nuevoPrecio);
+        // Cantidad
+        int cantidad;
+        try {
+            System.out.print("Cantidad: ");
+            cantidad = Integer.parseInt(scanner.nextLine());
+            if (cantidad < 0) {
+                System.out.println("La cantidad no puede ser negativa.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: La cantidad debe ser un número.");
+            return;
+        }
 
-        boolean actualizado = service.modificarProducto(p.getCodigo(), nombreFinal, cantidadFinal, precioFinal);
+        // Precio
+        double precio;
+        try {
+            System.out.print("Precio: ");
+            precio = Double.parseDouble(scanner.nextLine());
+            if (precio < 0) {
+                System.out.println("El precio no puede ser negativo.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: El precio debe ser un número.");
+            return;
+        }
 
-        if (actualizado) {
-            System.out.println("Producto modificado correctamente.");
+        // Crear producto
+        Producto producto = new Producto(codigo, nombre, descripcion, cantidad, precio);
+
+        // Guardar producto
+        service.agregarProducto(producto);
+
+        System.out.println("Producto agregado correctamente.");
+    }
+
+    public void listarProductos() {
+        System.out.println("\n=== LISTA DE PRODUCTOS ===");
+
+        for (Producto p : service.listarProductos()) {
+            System.out.println("Código: " + p.getCodigo());
+            System.out.println("Nombre: " + p.getNombre());
+            System.out.println("Descripción: " + p.getdescripcion());
+            System.out.println("Cantidad: " + p.getCantidad());
+            System.out.println("Precio: " + p.getPrecio());
+            System.out.println("----------------------------------");
+        }
+    
+    }
+
+    public void eliminarProducto() {
+        System.out.print("Ingrese el código del producto a eliminar: ");
+        String codigo = scanner.nextLine().trim();
+
+        boolean eliminado = service.eliminarProducto(codigo);
+
+        if (eliminado) {
+            System.out.println("Producto eliminado correctamente.");
         } else {
-            System.out.println("No se pudo modificar el producto.");
+            System.out.println("No se encontró un producto con ese código.");
         }
     }
+
+
 }

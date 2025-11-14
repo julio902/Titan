@@ -6,11 +6,18 @@ import utils.FileUtils;
 
 public class InventarioService {
     private List<Producto> productos;
+    private int contadorCodigo = 0;
 
     public InventarioService() {
-        // Cargar productos desde el archivo al iniciar
+                                    // Cargar productos desde el archivo al iniciar
         productos = FileUtils.cargarProductos();
     }
+                                     // generador de codigo del producto 
+    public String generarCodigo() {
+    contadorCodigo++;
+    return String.format("PRD-%03d", contadorCodigo);
+    }
+
 
     public void agregarProducto(Producto p) { // agregar producto******
         productos.add(p);
@@ -46,12 +53,12 @@ public class InventarioService {
         return null;
     }
     // método para modificar producto***********
-    public boolean modificarProducto(String codigo, String nuevoNombre, int nuevaCantidad, double nuevoPrecio) {
+    public boolean modificarProducto(String codigo, String nuevoNombre, String nuevaDescripcion, int nuevaCantidad, double nuevoPrecio) {
         for (int i = 0; i < productos.size(); i++) {
             Producto p = productos.get(i);
             if (p.getCodigo().equalsIgnoreCase(codigo)) {
                 // Creamos un nuevo objeto actualizado
-                Producto actualizado = new Producto(codigo, nuevoNombre, nuevaCantidad, nuevoPrecio);
+                Producto actualizado = new Producto(codigo, nuevoNombre,nuevaDescripcion, nuevaCantidad, nuevoPrecio);
                 productos.set(i, actualizado); // reemplazamos el anterior
                 FileUtils.guardarProductos(productos); // guardamos cambios
                 return true;

@@ -1,22 +1,27 @@
 package controllers;
 
+import java.util.List;
 import models.Usuario;
 import services.UsuarioService;
 
 public class UsuarioController {
-    private UsuarioService service = new UsuarioService();
 
-    public Usuario verificarUsuario(String user, String password) {
-        return service.verificarUsuario(user, password);
+    private final UsuarioService usuarioService = new UsuarioService();
+
+    public Usuario validarCredenciales(String user, String pass, String rol) {
+        return usuarioService.validarCredenciales(user, pass, rol);
     }
 
-    public void registrarUsuario(Usuario nuevo) {
-        service.registrarUsuario(nuevo);
-        System.out.println("✅ Usuario registrado correctamente.");
+    public void registrarUsuario(Usuario usuario) {
+        usuarioService.registrarUsuario(usuario);
+    }
+    
+    public List<Usuario> obtenerUsuarios() {
+        return usuarioService.listarUsuarios();
     }
 
     public void listarUsuarios() {
-        for (Usuario u : service.listarUsuarios()) {
+        for (Usuario u : usuarioService.listarUsuarios()) {
             System.out.println(u);
         }
     }

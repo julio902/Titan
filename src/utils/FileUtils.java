@@ -13,36 +13,56 @@ public class FileUtils {
     public static void guardarProductos(List<Producto> productos) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PRODUCTOS))) {
             for (Producto p : productos) {
-                writer.write(p.getCodigo() + ";" + p.getNombre() + ";" + p.getCantidad() + ";" + p.getPrecio());
+                writer.write(
+                    p.getCodigo() + ";" +
+                    p.getNombre() + ";" +
+                    p.getdescripcion() + ";" +
+                    p.getCantidad() + ";" +
+                    p.getPrecio()
+                );
                 writer.newLine();
             }
         } catch (IOException e) {
-            System.out.println("⚠️ Error al guardar productos: " + e.getMessage());
+            System.out.println("Error al guardar productos: " + e.getMessage());
         }
     }
+   
 
-    public static List<Producto> cargarProductos() {
+   public static List<Producto> cargarProductos() {
         List<Producto> productos = new ArrayList<>();
         File archivo = new File(FILE_PRODUCTOS);
         if (!archivo.exists()) return productos;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PRODUCTOS))) {
             String linea;
+
             while ((linea = reader.readLine()) != null) {
+
+                // Evitar líneas vacías
+                if (linea.trim().isEmpty()) continue;
+
                 String[] datos = linea.split(";");
-                if (datos.length == 4) {
-                    String codigo = datos[0];
-                    String nombre = datos[1];
-                    int cantidad = Integer.parseInt(datos[2]);
-                    double precio = Double.parseDouble(datos[3]);
-                    productos.add(new Producto(codigo, nombre, cantidad, precio));
+
+                // Formato esperado: 5 datos
+                if (datos.length == 5) {
+
+                    String codigo      = datos[0];
+                    String nombre      = datos[1];
+                    String descripcion = datos[2];
+                    int cantidad       = Integer.parseInt(datos[3]);
+                    double precio      = Double.parseDouble(datos[4]);
+
+                    productos.add(new Producto(codigo, nombre, descripcion, cantidad, precio));
                 }
             }
+
         } catch (IOException e) {
-            System.out.println("⚠️ Error al cargar productos: " + e.getMessage());
+            System.out.println("Error al cargar productos: " + e.getMessage());
         }
+
         return productos;
     }
+
 
     // =================== USUARIOS ===================
     public static void guardarUsuarios(List<Usuario> usuarios) {
@@ -52,7 +72,7 @@ public class FileUtils {
                 writer.newLine();
             }
         } catch (IOException e) {
-            System.out.println("⚠️ Error al guardar usuarios: " + e.getMessage());
+            System.out.println(" Error al guardar usuarios: " + e.getMessage());
         }
     }
 
@@ -77,7 +97,7 @@ public class FileUtils {
                 }
             }
         } catch (IOException e) {
-            System.out.println("⚠️ Error al cargar usuarios: " + e.getMessage());
+            System.out.println("Error al cargar usuarios: " + e.getMessage());
         }
         return usuarios;
     }
