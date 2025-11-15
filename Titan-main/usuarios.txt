@@ -1,0 +1,8 @@
+admin;123;administrador
+almacen;123;almacenista
+vendedor;123;vendedor
+brian orozco;qwerty;administrador
+brian orozco;qwerty;administrador
+julio;1234;almacenista
+;4321;almacenista
+brayanorozco@confectexctg.com;Qr7$Z-eZ;administrador
