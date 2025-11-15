@@ -55,6 +55,10 @@ public class MenuAdministrador {
         System.out.print("Nuevo usuario: ");
         String user = scanner.nextLine();
 
+        String userNormalizado = user.trim().replace(" ", "").toLowerCase();
+        String dominio = "@confectexctg.com";
+        String correoUsuario = userNormalizado+dominio;
+
         System.out.print("Contraseña: ");
         String password = scanner.nextLine();
 
@@ -78,7 +82,7 @@ public class MenuAdministrador {
             }
         }
 
-        usuarioController.registrarUsuario(new Usuario(user, password, rol));
+        usuarioController.registrarUsuario(new Usuario(correoUsuario, password, rol));
         System.out.println("Usuario registrado correctamente con rol: " + rol);
     }
 }

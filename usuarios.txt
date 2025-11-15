@@ -4,3 +4,4 @@ vendedor;123;vendedor
 brian orozco;qwerty;administrador
 brian orozco;qwerty;administrador
 julio;1234;almacenista
+kevinpuerta@confectexctg.com;4321;almacenista
