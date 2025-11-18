@@ -12,6 +12,7 @@ public class MenuAlmacenista {
 
         do {
             System.out.println("\n=== === === SISTEMA DE INVENTARIO === === ===");
+            System.out.println("\n=== === === MENÚ ALMACEN  === === ===");
             System.out.println("\t[1] Agregar producto");
             System.out.println("\t[2] Listar productos");
             System.out.println("\t[3] Buscar producto");
