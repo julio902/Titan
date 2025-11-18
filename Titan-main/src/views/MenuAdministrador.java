@@ -4,6 +4,7 @@ import controllers.UsuarioController;
 import java.util.List;
 import java.util.Scanner;
 import models.Usuario;
+import utils.UsuarioValidators;
 
 public class MenuAdministrador {
     private final Scanner scanner = new Scanner(System.in);
@@ -59,8 +60,9 @@ public class MenuAdministrador {
         String dominio = "@confectexctg.com";
         String correoUsuario = userNormalizado+dominio;
 
-        System.out.print("Contraseña: ");
-        String password = scanner.nextLine();
+        String password = UsuarioValidators.generarPasswordAleatoria();
+
+        System.out.println("\nLa contraseña generada para el usuario es: " + password);
 
         System.out.println("\nSeleccione el rol del nuevo usuario:");
         System.out.println("\t[1] Administrador");
@@ -70,6 +72,8 @@ public class MenuAdministrador {
 
         String opcion = scanner.nextLine();
         String rol = "";
+
+        
 
         // Eleccion de roles 
         switch (opcion) {
