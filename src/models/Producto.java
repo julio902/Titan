@@ -1,7 +1,7 @@
 package models;
 
 public class Producto {
-    private String codigo;
+    private final String codigo;
     private String nombre;
     private int cantidad;
     private double precio;

@@ -1,33 +1,30 @@
 package views;
 
-import java.util.Scanner;
 import controllers.UsuarioController;
-import models.Usuario;
+import java.util.Scanner;
 
 public class MenuLogin {
     private final Scanner scanner = new Scanner(System.in);
     private final UsuarioController usuarioController = new UsuarioController();
 
     public void mostrarLogin() {
-        System.out.println("=== SISTEMA DE INVENTARIO ===");
-        System.out.print("Usuario: ");
-        String user = scanner.nextLine();
-        System.out.print("Contraseña: ");
-        String password = scanner.nextLine();
+        System.out.println("=== SISTEMA DE INVENTARIO CONFECTEX CARTAGENA ===");
+        System.out.println("************** Inicio de Sesion *****************");
+        System.out.println("Seleccione su Perfil de Usuario.");
+        System.out.println("\t[1] Administrador                                        ||");
+        System.out.println("\t[2] Vendedor                                             ||");
+        System.out.println("\t[3] Producción                                           ||");
+        System.out.println("\t[4] Salir                                                ||");
+        System.out.println("===========================================================||");
+    
+        String opcion = scanner.nextLine().trim();
 
-        Usuario u = usuarioController.verificarUsuario(user, password);
+        switch (opcion) {
+            case 1 -> MenuAdministrador();
 
-        if (u != null) {
-            System.out.println("\n✅ Bienvenido, " + u.getUser() + " (" + u.getRol() + ")\n");
-
-            switch (u.getRol().toLowerCase()) {
-                case "administrador" -> new MenuAdministrador().mostrarMenu(u);
-                case "almacenista" -> new MenuAlmacenista().mostrarMenu(u);
-                case "vendedor" -> new MenuVendedor().mostrarMenu(u);
-                default -> System.out.println("Rol no reconocido.");
-            }
-        } else {
-            System.out.println("❌ Credenciales incorrectas.");
+            
+            default -> throw new AssertionError();
         }
-    }
+        
+        }
 }
