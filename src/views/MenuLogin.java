@@ -2,6 +2,7 @@ package views;
 
 import controllers.UsuarioController;
 import java.util.Scanner;
+import models.Usuario;
 
 public class MenuLogin {
 
