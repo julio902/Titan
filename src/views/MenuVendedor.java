@@ -10,6 +10,11 @@ public class MenuVendedor {
 
     public void mostrarMenu(Usuario vendedor) {
         int opcion;
+
+        // ==============================================
+        // 
+        // ==============================================
+
         do {
             System.out.println("\n=== === === MENÚ VENDEDOR === === ===");
             System.out.println("\t[1] Ver stock de productos");

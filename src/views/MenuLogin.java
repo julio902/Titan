@@ -14,10 +14,14 @@ public class MenuLogin {
         
 
         while (true) { 
+
+            // ======================================
+            // MENU PRINCIPAL INICIO DE SESION
+            // ====================================
             
-            System.out.println("\n=== SISTEMA DE INVENTARIO CONFECTEX CARTAGENA ===");
-            System.out.println("************** Inicio de Sesion *****************");
-            System.out.println("Seleccione su Perfil de Usuario.");
+            System.out.println("\n=== === === SISTEMA DE INVENTARIO CONFECTEX CARTAGENA === === ===");
+            System.out.println("\t************** Inicio de Sesion *****************");
+            System.out.println("\n\tSeleccione su Perfil de Usuario.");
             System.out.println("\t[1] Administrador                                        ||");
             System.out.println("\t[2] Vendedor                                             ||");
             System.out.println("\t[3] Almacenista                                          ||");
@@ -46,27 +50,27 @@ public class MenuLogin {
             int intentos = 0;
             while (intentos < 3) {
 
-                System.out.println("\n********************************");
+                System.out.println("\n\t********************************");
 
-                System.out.print("\tUsuario: ");
+                System.out.print("\tIngrese Usuario: ");
                 String user = scanner.nextLine();
 
-                System.out.print("\tContraseña: ");
+                System.out.print("\tIngrese Contraseña: ");
                 String pass = scanner.nextLine(); 
                 
-                System.out.println("********************************");
+                System.out.println("\t********************************");
 
                 // Validacion del usuario ingresado
                 Usuario u = usuarioController.validarCredenciales(user, pass, rol);
 
                 if (u != null) {
 
-                    System.out.println("\n  Bienvenido " + u.getUser() + "\n");
+                    System.out.println("\n\t ==> Bienvenido " + u.getUser() + "\n");
 
                     switch (rol) {
                         case "administrador" -> new MenuAdministrador().mostrar();
                         case "vendedor"      -> new MenuVendedor().mostrarMenu(u);
-                        case "almacenista"    -> new MenuAlmacenista().mostrarMenu(u);
+                        case "almacenista"    -> new MenuAlmacenista().mostrarMenu();
                     }
 
                     break; // Regresar al Menu anterio

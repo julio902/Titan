@@ -12,12 +12,17 @@ public class MenuAdministrador {
     // Este es el método que llamará MenuLogin
     public void mostrar() {
         int opcion;
+    // ==============================================
+    // MENU ADMINISTRADOR 
+    // ==============================================
+
+
         do {
             System.out.println("\n=== === === MENÚ ADMINISTRADOR === === ===");
             System.out.println("\t[1] Registrar nuevo usuario");
             System.out.println("\t[2] Listar usuarios");
             System.out.println("\t[3] Regresar al Menu Anterior");
-            System.out.println("=============================================");
+            System.out.println("==========================================");
             System.out.print("Seleccione una opción: ");
             opcion = Integer.parseInt(scanner.nextLine());
 
@@ -45,16 +50,24 @@ public class MenuAdministrador {
         }
 
         System.out.println("\n=== LISTA DE USUARIOS ===");
+        System.out.printf("%-40s %-15s\n", "Usuario", "Rol");
+        System.out.println("-------------------------------------------------------");
         for (Usuario u : lista) {
-            System.out.println("- " + u.getUser() + "\t| Rol: \t" + u.getRol());
+            System.out.printf("%-40s %-15s\n", u.getUser(), u.getRol());
         }
+
+        System.out.println("=======================================================");
     }
-    // registro de usuarios 
+    
+    // ==============================================
+    // REGISTRO DE USUARIOS NUEVOS 
+    // ==============================================
+
     private void registrarUsuario() {
 
         System.out.print("Nuevo usuario: ");
         String user = scanner.nextLine();
-
+        // creacion del correo mediante el nombre del nuevo usuario a ingresar al programa 
         String userNormalizado = user.trim().replace(" ", "").toLowerCase();
         String dominio = "@confectexctg.com";
         String correoUsuario = userNormalizado+dominio;
