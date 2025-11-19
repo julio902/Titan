@@ -27,7 +27,7 @@ public class UsuarioService {
     public Usuario validarCredenciales(String user, String password, String rol) {
 
         for (Usuario u : usuarios) {
-            if (u.getUser().equalsIgnoreCase(user)
+            if (u.getCorreo().equalsIgnoreCase(user)
                     && u.getPassword().equals(password)
                     && u.getRol().equalsIgnoreCase(rol)) {
                 return u;

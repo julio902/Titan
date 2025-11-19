@@ -20,6 +20,6 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return user + " - Rol: " + rol;
+        return user + " (" + correo + ") - Rol: " + rol;
     }
 }

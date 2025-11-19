@@ -3,7 +3,9 @@ package views;
 import controllers.UsuarioController;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import models.Usuario;
+
 
 public class MenuAdministrador {
     private final Scanner scanner = new Scanner(System.in);
@@ -19,7 +21,7 @@ public class MenuAdministrador {
 
         do {
             System.out.println("\n=== === === MENÚ ADMINISTRADOR === === ===");
-            System.out.println("\t[1] Registrar nuevo usuario");
+            System.out.println("\n\t[1] Registrar nuevo usuario");
             System.out.println("\t[2] Listar usuarios");
             System.out.println("\t[3] Regresar al Menu Anterior");
             System.out.println("==========================================");
@@ -62,18 +64,45 @@ public class MenuAdministrador {
     // ==============================================
     // REGISTRO DE USUARIOS NUEVOS 
     // ==============================================
+    public static boolean validarContrasena(String contrasena) {
+        // Expresión regular para validar una contraseña segura******
+        String regexContrasena =
+                "^(?=.*[a-z])" +        // al menos una letra minúscula
+                "(?=.*[A-Z])" +        // al menos una letra mayúscula
+                "(?=.*\\d)" +          // al menos un dígito
+                "(?=.*[@$!%*?&._-])" + // al menos un carácter especial
+                "[A-Za-z\\d@$!%*?&._-]{8,}$"; // mínimo 8 caracteres
+
+        Pattern pattern = Pattern.compile(regexContrasena);
+        return pattern.matcher(contrasena).matches();
+    }
 
     private void registrarUsuario() {
 
-        System.out.print("Nuevo usuario: ");
+        System.out.println("\n=== === === Nuevos Usuarios === === ===");
+        System.out.print("\nNuevo usuario: ");
         String user = scanner.nextLine();
         // creacion del correo mediante el nombre del nuevo usuario a ingresar al programa 
         String userNormalizado = user.trim().replace(" ", "").toLowerCase();
         String dominio = "@confectexctg.com";
         String correoUsuario = userNormalizado+dominio;
 
-        System.out.print("Contraseña: ");
-        String password = scanner.nextLine();
+        String password;
+        do {
+        System.out.println("\nLa contraseña debe tener al menos 8 caracteres\nincluir una mayúscula\nuna minúscula\nun número y un carácter especial (@$!%*?&._)");
+        System.out.print("\nContraseña: ");
+        password = scanner.nextLine();
+        System.out.println("\n===========================================");
+
+            if (!validarContrasena(password)) {
+                System.out.println("\nLa contraseña debe tener al menos 8 caracteres\nincluir una mayúscula\nuna minúscula\nun número y un carácter especial (@$!%*?&._)");
+            }
+        } while (!validarContrasena(password));
+
+        // Aquí puedes continuar con el registro del usuario
+        System.out.println("Usuario registrado exitosamente con el correo: " + correoUsuario);     
+        
+        // asignacion del rol para el nuevo usuario
 
         System.out.println("\nSeleccione el rol del nuevo usuario:");
         System.out.println("\t[1] Administrador");
@@ -98,8 +127,8 @@ public class MenuAdministrador {
         Usuario nuevoUsuario = new Usuario(
             user,               // Nombre real
             correoUsuario,      // Correo generado
-            password,
-            rol
+            password,           // Contraseña
+            rol                 // Roll Asignado
         );        
 
         boolean registrado = usuarioController.registrarUsuario(nuevoUsuario);
