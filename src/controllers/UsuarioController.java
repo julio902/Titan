@@ -12,8 +12,8 @@ public class UsuarioController {
         return usuarioService.validarCredenciales(user, pass, rol);
     }
 
-    public void registrarUsuario(Usuario usuario) {
-        usuarioService.registrarUsuario(usuario);
+    public boolean  registrarUsuario(Usuario usuario) {
+       return usuarioService.registrarUsuario(usuario);
     }
     
     public List<Usuario> obtenerUsuarios() {

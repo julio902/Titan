@@ -14,7 +14,7 @@ public class UsuarioFileUtils {
                 writer.newLine();
             }
         } catch (IOException e) {
-            System.out.println("⚠️ Error al guardar los usuarios: " + e.getMessage());
+            System.out.println("Error al guardar los usuarios: " + e.getMessage());
         }
     }
 
@@ -28,12 +28,12 @@ public class UsuarioFileUtils {
             String linea;
             while ((linea = reader.readLine()) != null) {
                 String[] datos = linea.split(";");
-                if (datos.length == 3) {
-                    usuarios.add(new Usuario(datos[0], datos[1], datos[2]));
+                if (datos.length == 4) {
+                    usuarios.add(new Usuario(datos[0], datos[1], datos[2], datos[3]));
                 }
             }
         } catch (IOException e) {
-            System.out.println("⚠️ Error al cargar los usuarios: " + e.getMessage());
+            System.out.println("Error al cargar los usuarios: " + e.getMessage());
         }
 
         return usuarios;

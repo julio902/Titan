@@ -36,9 +36,23 @@ public class UsuarioService {
         return null;
     }
 
-    public void registrarUsuario(Usuario nuevo) {
+    // REGISTRAR USUARIO CORRECTAMENTE 
+    public boolean registrarUsuario(Usuario nuevo) {
+
+        // Validar si ya existe el correo o nombre de usuario
+        for (Usuario u : usuarios) {
+            if (u.getCorreo().equalsIgnoreCase(nuevo.getCorreo())
+                || u.getUser().equalsIgnoreCase(nuevo.getUser())) {
+
+                return false; // Usuario ya existe
+            }
+        }
+
+        // Agregar usuario
         usuarios.add(nuevo);
         FileUtils.guardarUsuarios(usuarios);
+
+        return true; // Registrado correctamente
     }
 
     public List<Usuario> listarUsuarios() {

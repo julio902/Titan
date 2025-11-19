@@ -94,8 +94,21 @@ public class MenuAdministrador {
                 return;
             }
         }
+            // creamos el usuario con su nombre, correo, password y rol 
+        Usuario nuevoUsuario = new Usuario(
+            user,               // Nombre real
+            correoUsuario,      // Correo generado
+            password,
+            rol
+        );        
 
-        usuarioController.registrarUsuario(new Usuario(correoUsuario, password, rol));
-        System.out.println("Usuario registrado correctamente con rol: " + rol);
+        boolean registrado = usuarioController.registrarUsuario(nuevoUsuario);
+
+         if (registrado) {
+            System.out.println("Usuario registrado correctamente con rol: " + rol);
+        } else {
+            System.out.println("No se pudo registrar el usuario (ya existe).");
+        }
+       
     }
 }
