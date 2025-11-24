@@ -1,0 +1,3 @@
+Administrador;admin@confectexctg.com;123;administrador
+Almacenista;almacen@confectexctg.com;123;almacenista
+Vendedor;vendedor@confectexctg.com;123;vendedor
