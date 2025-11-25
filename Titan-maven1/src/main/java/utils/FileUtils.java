@@ -84,7 +84,7 @@ public class FileUtils {
         if (!archivo.exists()) {
 
             // Crear usuarios por defecto con correo institucional
-            usuarios.add(new Usuario("Administrador", "admin@confectexctg.com", "123", "administrador"));
+            usuarios.add(new Usuario("Administrador", "admin@confectexctg.com", "Discodurode1ter@", "administrador"));
             usuarios.add(new Usuario("Almacenista", "almacen@confectexctg.com", "123", "almacenista"));
             usuarios.add(new Usuario("Vendedor", "vendedor@confectexctg.com", "123", "vendedor"));
 
