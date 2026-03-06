@@ -1,9 +1,10 @@
 package views;
 
-import controllers.UsuarioController;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import controllers.UsuarioController;
 import models.Usuario;
 
 
@@ -40,25 +41,6 @@ public class MenuAdministrador {
         } while (opcion != 3);
              System.out.println("Regresando a la pantalla de inicio de sesión.");
              new MenuLogin().mostrarLogin();
-    }
-
-    // Lista de usuarios registrados en el sistema 
-    private void mostrarUsuarios() {
-        List<Usuario> lista = usuarioController.obtenerUsuarios();
-
-        if (lista.isEmpty()) {
-            System.out.println("No hay usuarios registrados.");
-            return;
-        }
-
-        System.out.println("\n=== LISTA DE USUARIOS ===");
-        System.out.printf("%-40s %-15s\n", "Usuario", "Rol");
-        System.out.println("-------------------------------------------------------");
-        for (Usuario u : lista) {
-            System.out.printf("%-40s %-15s\n", u.getUser(), u.getRol());
-        }
-
-        System.out.println("=======================================================");
     }
     
     // ==============================================
@@ -139,5 +121,33 @@ public class MenuAdministrador {
             System.out.println("No se pudo registrar el usuario (ya existe).");
         }
        
+    }
+    //================================================
+    // Lista de usuarios registrados en el sistema
+    //================================================
+
+    private void mostrarUsuarios() {
+        List<Usuario> lista = usuarioController.obtenerUsuarios();
+
+        if (lista.isEmpty()) {
+            System.out.println("No hay usuarios registrados.");
+            return;
+        }
+
+        System.out.println("\n=== LISTA DE USUARIOS ===");
+        System.out.printf("%-40s %-15s\n", "Usuario", "Rol");
+        System.out.println("-------------------------------------------------------");
+        for (Usuario u : lista) {
+            System.out.printf("%-40s %-15s\n", u.getUser(), u.getRol());
+        }
+
+        System.out.println("=======================================================");
+    }
+
+    private void modificarUsuario(){
+
+        
+
+        
     }
 }
