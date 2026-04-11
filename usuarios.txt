@@ -2,3 +2,4 @@ Administrador;admin@confectexctg.com;Discodurode1ter@;administrador
 Almacenista;almacen@confectexctg.com;123;almacenista
 Vendedor;vendedor@confectexctg.com;123;vendedor
 brayan orozco;brayanorozco@confectexctg.com;Discodurode1ter@;administrador
+anderson orozco;andersonorozco@confectexctg.com;Discodurode2ter@;almacenista

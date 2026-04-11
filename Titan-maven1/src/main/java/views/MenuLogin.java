@@ -1,7 +1,8 @@
 package views;
 
-import controllers.UsuarioController;
 import java.util.Scanner;
+
+import controllers.UsuarioController;
 import models.Usuario;
 
 public class MenuLogin {
@@ -51,12 +52,12 @@ public class MenuLogin {
             while (intentos < 3) {
 
                 System.out.println("\n\t********************************");
-
+                    // inicio de sesion para el roll seleccionado
                 System.out.print("\tIngrese Usuario: ");
                 String user = scanner.nextLine();
 
                 System.out.print("\tIngrese Contraseña: ");
-                String pass = scanner.nextLine(); 
+                String pass = scanner.nextLine();
                 
                 System.out.println("\t********************************");
 
@@ -73,7 +74,7 @@ public class MenuLogin {
                         case "almacenista"    -> new MenuAlmacenista().mostrarMenu();
                     }
 
-                    break; // Regresar al Menu anterio
+                    break; // Regresar al Menu anterior
                 } else {
                     intentos++;
                     System.out.println("\n Credenciales incorrectas.");
@@ -82,8 +83,8 @@ public class MenuLogin {
             }
         
             // si llega aquí = falló 3 veces
-            System.out.println("Ha excedido el número de intentos.");        
+            System.out.println("Ha excedido el número de intentos.");
             
-        }   
+        }
     }
 }

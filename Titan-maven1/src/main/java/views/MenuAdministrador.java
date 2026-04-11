@@ -134,7 +134,7 @@ public class MenuAdministrador {
             return;
         }
 
-        System.out.println("\n=== LISTA DE USUARIOS ===");
+        System.out.println("\n\t=== === ===LISTA DE USUARIOS === === ===\n");
         System.out.printf("%-40s %-15s\n", "Usuario", "Rol");
         System.out.println("-------------------------------------------------------");
         for (Usuario u : lista) {
@@ -144,10 +144,10 @@ public class MenuAdministrador {
         System.out.println("=======================================================");
     }
 
-    private void modificarUsuario(){
+    //private void modificarUsuario(){
 
         
 
         
-    }
+    //}
 }
