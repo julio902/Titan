@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.List;
 import java.util.Scanner;
+
 import models.Producto;
 import services.InventarioService;
 
@@ -37,7 +38,7 @@ public class InventarioController {
         try {
             System.out.print("Cantidad: ");
             cantidad = Integer.parseInt(scanner.nextLine());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             System.out.println("Cantidad inválida.");
             return;
         }
@@ -46,7 +47,7 @@ public class InventarioController {
         try {
             System.out.print("Precio: ");
             precio = Double.parseDouble(scanner.nextLine());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             System.out.println("Precio inválido.");
             return;
         }
@@ -74,7 +75,7 @@ public class InventarioController {
         for (Producto p : lista) {
             System.out.printf("%-12s: %s%n", "Código", p.getCodigo());
             System.out.printf("%-12s: %s%n", "Nombre", p.getNombre());
-            System.out.printf("%-12s: %s%n", "Descripción", p.getdescripcion());
+            System.out.printf("%-12s: %s%n", "Descripción", p.getDescripcion());
             System.out.printf("%-12s: %d Uds%n", "Cantidad", p.getCantidad());
             System.out.printf("%-12s: $%.2f%n", "Precio", p.getPrecio());
             System.out.println("--------------------------------------------");
@@ -100,7 +101,7 @@ public class InventarioController {
         for (Producto p : encontrados) {
             System.out.println("Código: " + p.getCodigo());
             System.out.println("Nombre: " + p.getNombre());
-            System.out.println("Descripción: " + p.getdescripcion());
+            System.out.println("Descripción: " + p.getDescripcion());
             System.out.println("Cantidad: " + p.getCantidad()+"UND");
             System.out.println("Precio: $" + p.getPrecio());
             System.out.println("------------------------------------");
@@ -149,9 +150,9 @@ public class InventarioController {
         String nombre = scanner.nextLine();
         if (nombre.isEmpty()) nombre = p.getNombre();
 
-        System.out.print("Nueva descripción (" + p.getdescripcion() + "): ");
+        System.out.print("Nueva descripción (" + p.getDescripcion() + "): ");
         String descripcion = scanner.nextLine();
-        if (descripcion.isEmpty()) descripcion = p.getdescripcion();
+        if (descripcion.isEmpty()) descripcion = p.getDescripcion();
 
         System.out.print("Nueva cantidad (" + p.getCantidad() + "): ");
         String cant = scanner.nextLine();

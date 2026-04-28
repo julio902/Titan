@@ -15,7 +15,7 @@ public class Producto {
         this.precio = precio;
     }
 
-    // Getters para acceder a los datos 
+    // Getters para acceder a los datos
     public String getCodigo() {
         return codigo;
     }
@@ -24,7 +24,7 @@ public class Producto {
         return nombre;
     }
 
-    public String getdescripcion(){
+    public String getDescripcion(){
         return descripcion;
     }
 

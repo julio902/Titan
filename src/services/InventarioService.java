@@ -11,10 +11,7 @@ public class InventarioService {
     private int contadorCodigo = 0;
 
     public InventarioService() {
-        // Cargar productos desde archivo
         productos = FileUtils.cargarProductos();
-
-        // Ajustar contador según el último producto guardado
         actualizarContadorCodigo();
     }
 
@@ -23,16 +20,18 @@ public class InventarioService {
     // ==============================================
     private void actualizarContadorCodigo() {
         for (Producto p : productos) {
-            try {
-                // PRD-005 → 5
-                String numStr = p.getCodigo().substring(4);
-                int num = Integer.parseInt(numStr);
+            String codigo = p.getCodigo();
 
-                if (num > contadorCodigo) {
-                    contadorCodigo = num;  
+            if (codigo != null && codigo.startsWith("PRD-")) {
+                try {
+                    int num = Integer.parseInt(codigo.substring(4));
+
+                    if (num > contadorCodigo) {
+                        contadorCodigo = num;
+                    }
+                } catch (NumberFormatException e) {
+                    // Ignorar códigos inválidos
                 }
-            } catch (NumberFormatException e) {
-                // Ignorar por si el código no tiene formato válido
             }
         }
     }
@@ -58,25 +57,18 @@ public class InventarioService {
     }
 
     // ==============================================
-    // ELIMINAR PRODUCTO
+    // ELIMINAR PRODUCTO (MEJORADO)
     // ==============================================
     public boolean eliminarProducto(String codigo) {
-        Producto encontrado = null;
+        boolean eliminado = productos.removeIf(p -> 
+            p.getCodigo().equalsIgnoreCase(codigo)
+        );
 
-        for (Producto p : productos) {
-            if (p.getCodigo().equalsIgnoreCase(codigo)) {
-                encontrado = p;
-                break;
-            }
-        }
-
-        if (encontrado != null) {
-            productos.remove(encontrado);
+        if (eliminado) {
             FileUtils.guardarProductos(productos);
-            return true;
         }
 
-        return false;
+        return eliminado;
     }
 
     // ==============================================
@@ -92,17 +84,21 @@ public class InventarioService {
     }
 
     // ==============================================
-    // 🔍 NUEVO: BUSCAR POR COINCIDENCIA (NOMBRE, DESC O CÓDIGO)
+    // BUSCAR POR COINCIDENCIAS (MEJORADO)
     // ==============================================
     public List<Producto> buscarCoincidencias(String busqueda) {
         busqueda = busqueda.toLowerCase();
-
         List<Producto> resultados = new ArrayList<>();
 
         for (Producto p : productos) {
-            if (p.getCodigo().toLowerCase().contains(busqueda) ||
-                p.getNombre().toLowerCase().contains(busqueda) ||
-                p.getdescripcion().toLowerCase().contains(busqueda)) {
+
+            String codigo = p.getCodigo() != null ? p.getCodigo().toLowerCase() : "";
+            String nombre = p.getNombre() != null ? p.getNombre().toLowerCase() : "";
+            String desc = p.getDescripcion() != null ? p.getDescripcion().toLowerCase() : "";
+
+            if (codigo.contains(busqueda) || 
+                nombre.contains(busqueda) || 
+                desc.contains(busqueda)) {
 
                 resultados.add(p);
             }
@@ -112,28 +108,21 @@ public class InventarioService {
     }
 
     // ==============================================
-    // MODIFICAR PRODUCTO
+    // MODIFICAR PRODUCTO (MEJORADO)
     // ==============================================
     public boolean modificarProducto(String codigo, String nuevoNombre, 
                                      String nuevaDescripcion, int nuevaCantidad, 
                                      double nuevoPrecio) {
 
-        for (int i = 0; i < productos.size(); i++) {
-
-            Producto p = productos.get(i);
+        for (Producto p : productos) {
 
             if (p.getCodigo().equalsIgnoreCase(codigo)) {
 
-                // Nuevo objeto actualizado
-                Producto actualizado = new Producto(
-                    codigo,
-                    nuevoNombre,
-                    nuevaDescripcion,
-                    nuevaCantidad,
-                    nuevoPrecio
-                );
+                p.setNombre(nuevoNombre);
+                p.setDescripcion(nuevaDescripcion);
+                p.setCantidad(nuevaCantidad);
+                p.setPrecio(nuevoPrecio);
 
-                productos.set(i, actualizado);
                 FileUtils.guardarProductos(productos);
                 return true;
             }

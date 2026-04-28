@@ -27,7 +27,7 @@ public class MenuLogin {
             System.out.println("\t[2] Vendedor                                             ||");
             System.out.println("\t[3] Almacenista                                          ||");
             System.out.println("\t[4] Salir                                                ||");
-            System.out.println("==============================================================||");
+            System.out.println("=================================================================||");
 
             System.out.print("Opción: ");
             String opcion = scanner.nextLine();
