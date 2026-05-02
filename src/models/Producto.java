@@ -9,10 +9,10 @@ public class Producto {
 
     public Producto(String codigo, String nombre,String descripcion, int cantidad, double precio) {
         this.codigo = codigo;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.cantidad = cantidad;
-        this.precio = precio;
+        setNombre(nombre);
+        setDescripcion(descripcion);
+        setCantidad(cantidad);
+        setPrecio(precio);
     }
 
     // Getters para acceder a los datos
@@ -37,7 +37,10 @@ public class Producto {
     }
 
     // Setters para modificar los datos la guardados en la lista 
-    public void setNombre(String nombre) {
+     public void setNombre(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nombre inválido");
+        }
         this.nombre = nombre;
     }
 
@@ -46,15 +49,41 @@ public class Producto {
     }
 
     public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    if (cantidad < 0) {
+        throw new IllegalArgumentException("La cantidad no puede ser negativa");
     }
+    this.cantidad = cantidad;
+}
 
     public void setPrecio(double precio) {
+        if (precio < 0) {
+            throw new IllegalArgumentException("El precio no puede ser negativo");
+        }
         this.precio = precio;
     }
+     // Comportamiento POO vender y reponer productos, calcular valor del inventario
+    public void vender(int cantidadVendida) {
+        if (cantidadVendida <= 0 || cantidadVendida > cantidad) {
+            throw new IllegalArgumentException("Cantidad inválida o stock insuficiente");
+        }
+        this.cantidad -= cantidadVendida;
+    }
+
+    public void reponer(int cantidadAgregada) {
+        if (cantidadAgregada <= 0) {
+            throw new IllegalArgumentException("Cantidad inválida");
+        }
+        this.cantidad += cantidadAgregada;
+    }
+
+    public double calcularValorInventario() {
+        return cantidad * precio;
+    }
+
 
     @Override
     public String toString() {
-        return String.format("%s - %s | Cant: %d | $%.2f", codigo, nombre, cantidad, precio);
+       return String.format("%s - %s | %s | Cant: %d | $%.2f",
+                codigo, nombre, descripcion, cantidad, precio);
     }
 }

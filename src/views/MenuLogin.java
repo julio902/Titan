@@ -3,31 +3,31 @@ package views;
 import java.util.Scanner;
 
 import controllers.UsuarioController;
+import controllers.InventarioController;
+import services.InventarioService;
 import models.Usuario;
+import models.Administrador;
+import models.Vendedor;
+import models.Almacenista;
 
 public class MenuLogin {
 
     private final Scanner scanner = new Scanner(System.in);
     private final UsuarioController usuarioController = new UsuarioController();
 
-    public void mostrarLogin() {
+    // 🔥 UNA SOLA INSTANCIA (CLAVE)
+    private final InventarioService inventarioService = new InventarioService();
+    private final InventarioController inventarioController = new InventarioController(inventarioService);
 
-        
+    public void mostrarLogin() {
 
         while (true) {
 
-            // ======================================
-            // MENU PRINCIPAL INICIO DE SESION
-            // ====================================
-            
-            System.out.println("\n=== === === SISTEMA DE INVENTARIO CONFECTEX CARTAGENA === === ===");
-            System.out.println("\t************** Inicio de Sesion *****************");
-            System.out.println("\n\tSeleccione su Perfil de Usuario.");
-            System.out.println("\t[1] Administrador                                        ||");
-            System.out.println("\t[2] Vendedor                                             ||");
-            System.out.println("\t[3] Almacenista                                          ||");
-            System.out.println("\t[4] Salir                                                ||");
-            System.out.println("=================================================================||");
+            System.out.println("\n=== SISTEMA DE INVENTARIO CONFECTEX CARTAGENA ===");
+            System.out.println("[1] Administrador");
+            System.out.println("[2] Vendedor");
+            System.out.println("[3] Almacenista");
+            System.out.println("[4] Salir");
 
             System.out.print("Opción: ");
             String opcion = scanner.nextLine();
@@ -39,7 +39,7 @@ public class MenuLogin {
                 case "2" -> rol = "vendedor";
                 case "3" -> rol = "almacenista";
                 case "4" -> {
-                    System.out.println("Saliendo del sistema...");
+                    System.out.println("Saliendo...");
                     return;
                 }
                 default -> {
@@ -47,39 +47,43 @@ public class MenuLogin {
                     continue;
                 }
             }
-        
+
             int intentos = 0;
+
             while (intentos < 3) {
 
-                System.out.println("\n\t********************************");
-
-                System.out.print("\tIngrese Usuario: ");
+                System.out.print("Usuario: ");
                 String user = scanner.nextLine();
 
-                System.out.print("\tIngrese Contraseña: ");
+                System.out.print("Contraseña: ");
                 String pass = scanner.nextLine();
-                
-                System.out.println("\t********************************");
 
-                // Validacion del usuario ingresado
                 Usuario u = usuarioController.validarCredenciales(user, pass, rol);
 
                 if (u != null) {
 
-                    System.out.println("\n\t ==> Bienvenido " + u.getUser() + "\n");
-                    u.mostrarMenu();
-                    break; // Regresar al Menu anterio
+                    System.out.println("\nBienvenido " + u.getUser());
+
+                    // 🔥 AQUÍ ESTÁ LA CLAVE
+                    if (u instanceof Administrador) {
+                        new MenuAdministrador(inventarioController).mostrar();
+                    } 
+                    else if (u instanceof Vendedor) {
+                        new MenuVendedor(inventarioController).mostrarMenu(u);
+                    } 
+                    else if (u instanceof Almacenista) {
+                        new MenuAlmacenista(inventarioController).mostrarMenu();
+                    }
+
+                    break;
 
                 } else {
                     intentos++;
-                    System.out.println("\n Credenciales incorrectas.");
-                    System.out.println("Intento " + intentos + " de 3\n");
+                    System.out.println("Credenciales incorrectas (" + intentos + "/3)");
                 }
             }
-        
-            // si llega aquí = falló 3 veces
-            System.out.println("Ha excedido el número de intentos para este Perfil.");
-            
+
+            System.out.println("Demasiados intentos fallidos.");
         }
     }
 }

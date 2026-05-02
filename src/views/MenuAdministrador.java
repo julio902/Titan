@@ -5,123 +5,132 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import controllers.UsuarioController;
+import controllers.InventarioController;
 import models.Administrador;
 import models.Almacenista;
 import models.Usuario;
 import models.Vendedor;
 
 public class MenuAdministrador {
+
     private final Scanner scanner = new Scanner(System.in);
     private final UsuarioController usuarioController = new UsuarioController();
+    private final InventarioController inventarioController;
+
+    // 🔥 IMPORTANTE: RECIBIR CONTROLLER (NO CREARLO)
+    public MenuAdministrador(InventarioController inventarioController) {
+        this.inventarioController = inventarioController;
+    }
 
     public void mostrar() {
-        int opcion;
-                        /*==================MENU ADMINISTRADOR===============
-                        ===================================================== */
 
+        int opcion = -1;
 
         do {
-            System.out.println("\n=== === === MENÚ ADMINISTRADOR === === ===");//   vista principal del menu Administrador
-            System.out.println("\n\t[1] Registrar nuevo usuario");
-            System.out.println("\t[2] Listar usuarios");
-            System.out.println("\t[3] Regresar al Menu Anterior");
-            System.out.println("==========================================");
-            System.out.print("Seleccione una opción: ");
-            
+            System.out.println("\n=== MENÚ ADMINISTRADOR ===");
+            System.out.println("[1] Registrar usuario");
+            System.out.println("[2] Listar usuarios");
+            System.out.println("[3] Gestión de inventario 🔥");
+            System.out.println("[0] Cerrar sesión");
+            System.out.print("Seleccione: ");
+
             try {
-                opcion = Integer.parseInt(scanner.nextLine());  // evita que tenga errores comoel ingreso de letras o signos
+                opcion = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
-                System.out.println("Por favor, ingrese un número válido.");
-                opcion = 0;
+                System.out.println("Ingrese un número válido.");
                 continue;
             }
 
             switch (opcion) {
                 case 1 -> registrarUsuario();
                 case 2 -> mostrarUsuarios();
-                case 3 -> System.out.println("Volviendo al Menu Anterior...");
+                case 3 -> new MenuInventarioAdmin(inventarioController).mostrar(); // 🔥 SUBMENÚ
+                case 0 -> System.out.println("Cerrando sesión...");
                 default -> System.out.println("Opción no válida");
             }
-        } while (opcion != 3);
+
+        } while (opcion != 0);
     }
 
-    private void mostrarUsuarios() {   // =================== MOSTRAR USUARIO =================
+    // ================================
+    // MOSTRAR USUARIOS
+    // ================================
+    private void mostrarUsuarios() {
 
-        List<Usuario> lista = usuarioController.obtenerUsuarios(); // VALIDA SI LA LISTA ESTA VACIA
+        List<Usuario> lista = usuarioController.obtenerUsuarios();
+
         if (lista.isEmpty()) {
             System.out.println("No hay usuarios registrados.");
             return;
         }
 
-        System.out.println("\n=== LISTA DE USUARIOS ==="); // LISTA DE USUARIOS YA CREADOS
+        System.out.println("\n=== LISTA DE USUARIOS ===");
         System.out.printf("%-20s %-15s\n", "Usuario", "Rol");
         System.out.println("---------------------------------------");
+
         for (Usuario u : lista) {
             System.out.printf("%-20s %-15s\n", u.getUser(), u.getRol());
         }
     }
-    
-    public static boolean validarContrasena(String contrasena) { //==================== VAIDACION DE LA CONRASEÑA ==============
 
-        String regexContrasena = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$"; //PARAMETROS DE VALIDACION PARA CREACION DE LA CONTRESEÑA
-        return Pattern.compile(regexContrasena).matcher(contrasena).matches();
+    // ================================
+    // VALIDAR CONTRASEÑA
+    // ================================
+    public static boolean validarContrasena(String contrasena) {
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-]).{8,}$";
+        return Pattern.matches(regex, contrasena);
     }
 
-    private void registrarUsuario() {       // ===========REGISTRAR USUARIO ================
-        System.out.println("\n=== === === Nuevos Usuarios === === ===");
-        System.out.print("\nNuevo usuario: ");
+    // ================================
+    // REGISTRAR USUARIO
+    // ================================
+    private void registrarUsuario() {
+
+        System.out.println("\n=== NUEVO USUARIO ===");
+
+        System.out.print("Usuario: ");
         String user = scanner.nextLine();
-        
-        String userNormalizado = user.trim().replace(" ", "").toLowerCase();
-        String correoUsuario = userNormalizado + "@confectexctg.com";   // ------------------>   CREACION DE DOMINIO CONFECTEXCTG.COM
+
+        String correo = user.trim().replace(" ", "").toLowerCase() + "@confectexctg.com";
 
         String password;
+
         do {
-            System.out.print("\nIngrese contraseña segura: ");
+            System.out.print("Contraseña: ");
             password = scanner.nextLine();
+
             if (!validarContrasena(password)) {
-                System.out.println("\n¿error! La contraseña no cumple con los requisitos de seguridad.");// MENSAJE POR SI LA CONTRASEÑA ESTA MALA
                 System.out.println("""
-                                    La contraseña debe tener:
-                                    - Al menos una minúscula
-                                    - Al menos una mayúscula
-                                    - Al menos un número
-                                    - Un símbolo
-                                    - Mínimo 8 caracteres
-                                    """);
+                        Contraseña inválida:
+                        - Minúscula
+                        - Mayúscula
+                        - Número
+                        - Símbolo
+                        - Mínimo 8 caracteres
+                        """);
             }
+
         } while (!validarContrasena(password));
 
-        System.out.println("\nSeleccione el rol del nuevo usuario:");
-        System.out.println("\t[1] Administrador");
-        System.out.println("\t[2] Almacenista");
-        System.out.println("\t[3] Vendedor");
-        System.out.print("Opción: ");
-
+        System.out.println("Rol: [1] Admin [2] Almacenista [3] Vendedor");
         String opcion = scanner.nextLine();
-        
-        // ==========================================================
-        // APLICAMOS PILOMORFISMO PARA LA CREACION DEL NUEVO USUARIO
-        // ==========================================================
-        Usuario nuevoUsuario = null;  // VARIABLE TIPO USUARIO DONDE GUARDAREMOS EL NUEVO USUARIO SELECCIONADO
 
-        switch (opcion) {       // creamos un objeto tipo con el tipo de usuario seleccionado ya sea (ADMINISTRADOR, VENDEDOR. ALMACENISTA)
-            case "1" -> nuevoUsuario = new Administrador(user, correoUsuario, password);
-            case "2" -> nuevoUsuario = new Almacenista(user, correoUsuario, password);
-            case "3" -> nuevoUsuario = new Vendedor(user, correoUsuario, password);
+        Usuario nuevo = null;
+
+        switch (opcion) {
+            case "1" -> nuevo = new Administrador(user, correo, password);
+            case "2" -> nuevo = new Almacenista(user, correo, password);
+            case "3" -> nuevo = new Vendedor(user, correo, password);
             default -> {
-                System.out.println("Opción inválida. No se registró el usuario.");
+                System.out.println("Rol inválido.");
                 return;
             }
         }
 
-        
-        boolean registrado = usuarioController.registrarUsuario(nuevoUsuario); // VALIDA SI EL USUARIO EXISTE. LLEGADO EL CASO DE NO EXISTIR " GUARDARLO"
-
-        if (registrado) {
-            System.out.println("Usuario registrado correctamente como: " + nuevoUsuario.getRol());
+        if (usuarioController.registrarUsuario(nuevo)) {
+            System.out.println("Usuario creado correctamente.");
         } else {
-            System.out.println("No se pudo registrar el usuario (ya existe).");
+            System.out.println("El usuario ya existe.");
         }
     }
 }

@@ -2,6 +2,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import models.Producto;
 import utils.FileUtils;
 
@@ -10,6 +11,9 @@ public class InventarioService {
     private List<Producto> productos;
     private int contadorCodigo = 0;
 
+    // ==============================================
+    // CONSTRUCTOR
+    // ==============================================
     public InventarioService() {
         productos = FileUtils.cargarProductos();
         actualizarContadorCodigo();
@@ -42,26 +46,33 @@ public class InventarioService {
     }
 
     // ==============================================
-    // AGREGAR PRODUCTO
+    // AGREGAR PRODUCTO (VALIDADO)
     // ==============================================
-    public void agregarProducto(Producto p) {
+    public boolean agregarProducto(Producto p) {
+
+        if (buscarProductoPorCodigo(p.getCodigo()) != null) {
+            System.out.println("El producto ya existe");
+            return false;
+        }
+
         productos.add(p);
         FileUtils.guardarProductos(productos);
+        return true;
     }
 
     // ==============================================
-    // LISTAR PRODUCTOS
+    // LISTAR PRODUCTOS (PROTEGIDO)
     // ==============================================
     public List<Producto> listarProductos() {
-        return productos;
+        return new ArrayList<>(productos);
     }
 
     // ==============================================
-    // ELIMINAR PRODUCTO (MEJORADO)
+    // ELIMINAR PRODUCTO
     // ==============================================
     public boolean eliminarProducto(String codigo) {
-        boolean eliminado = productos.removeIf(p -> 
-            p.getCodigo().equalsIgnoreCase(codigo)
+        boolean eliminado = productos.removeIf(p ->
+                p.getCodigo().equalsIgnoreCase(codigo)
         );
 
         if (eliminado) {
@@ -84,7 +95,7 @@ public class InventarioService {
     }
 
     // ==============================================
-    // BUSCAR POR COINCIDENCIAS (MEJORADO)
+    // BUSCAR POR COINCIDENCIAS
     // ==============================================
     public List<Producto> buscarCoincidencias(String busqueda) {
         busqueda = busqueda.toLowerCase();
@@ -96,8 +107,8 @@ public class InventarioService {
             String nombre = p.getNombre() != null ? p.getNombre().toLowerCase() : "";
             String desc = p.getDescripcion() != null ? p.getDescripcion().toLowerCase() : "";
 
-            if (codigo.contains(busqueda) || 
-                nombre.contains(busqueda) || 
+            if (codigo.contains(busqueda) ||
+                nombre.contains(busqueda) ||
                 desc.contains(busqueda)) {
 
                 resultados.add(p);
@@ -108,26 +119,83 @@ public class InventarioService {
     }
 
     // ==============================================
-    // MODIFICAR PRODUCTO (MEJORADO)
+    // MODIFICAR PRODUCTO (USANDO POO)
     // ==============================================
-    public boolean modificarProducto(String codigo, String nuevoNombre, 
-                                     String nuevaDescripcion, int nuevaCantidad, 
-                                     double nuevoPrecio) {
+    public boolean modificarProducto(String codigo, String nuevoNombre, String nuevaDescripcion, int nuevaCantidad, double nuevoPrecio) {
 
-        for (Producto p : productos) {
+        Producto p = buscarProductoPorCodigo(codigo);
 
-            if (p.getCodigo().equalsIgnoreCase(codigo)) {
+        if (p != null) {
 
-                p.setNombre(nuevoNombre);
-                p.setDescripcion(nuevaDescripcion);
-                p.setCantidad(nuevaCantidad);
-                p.setPrecio(nuevoPrecio);
+            p.setNombre(nuevoNombre);
+            p.setDescripcion(nuevaDescripcion);
 
+            // Ajuste inteligente de stock
+            int diferencia = nuevaCantidad - p.getCantidad();
+
+            if (diferencia > 0) {
+                p.reponer(diferencia);
+            } else if (diferencia < 0) {
+                p.vender(-diferencia);
+            }
+
+            p.setPrecio(nuevoPrecio);
+
+            FileUtils.guardarProductos(productos);
+            return true;
+        }
+
+        return false;
+    }
+
+    // ==============================================
+    // VENDER PRODUCTO (POO)
+    // ==============================================
+    public boolean venderProducto(String codigo, int cantidad) {
+        Producto p = buscarProductoPorCodigo(codigo);
+
+        if (p != null) {
+            try {
+                p.vender(cantidad);
                 FileUtils.guardarProductos(productos);
                 return true;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
 
         return false;
+    }
+
+    // ==============================================
+    // REPONER PRODUCTO (POO)
+    // ==============================================
+    public boolean reponerProducto(String codigo, int cantidad) {
+        Producto p = buscarProductoPorCodigo(codigo);
+
+        if (p != null) {
+            try {
+                p.reponer(cantidad);
+                FileUtils.guardarProductos(productos);
+                return true;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        return false;
+    }
+
+    // ==============================================
+    // CALCULAR VALOR TOTAL DEL INVENTARIO
+    // ==============================================
+    public double calcularValorTotalInventario() {
+        double total = 0;
+
+        for (Producto p : productos) {
+            total += p.calcularValorInventario();
+        }
+
+        return total;
     }
 }
