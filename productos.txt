@@ -1,2 +1,2 @@
-PRD-002;camiseta tipo polo;tela polar en lana, compasicion 100% poliestermanga corta con pu�os tejidos multicolor;30;60000.0
+PRD-002;CAMISETA POLO CUELLO V;tela polar en lana, compasicion 100% poliestermanga corta con pu�os tejidos multicolor;60;80000.0
 PRD-004;sueter polo;sueter polo de algodon mangas corta y cuello en v;45;60000.0

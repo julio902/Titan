@@ -1,4 +1,5 @@
 package models;
+import controllers.InventarioController;
 import views.MenuVendedor;
 
 public class Vendedor extends Usuario {
@@ -7,8 +8,8 @@ public class Vendedor extends Usuario {
     }
 
     @Override
-    public void mostrarMenu() {
+    public void mostrarMenu(InventarioController controller) {
         // El vendedor necesita el objeto usuario para saludar
-        new MenuVendedor().mostrarMenu(this);
+        new MenuVendedor(controller).mostrarMenu(this);
     }
 }

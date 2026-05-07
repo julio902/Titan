@@ -1,4 +1,5 @@
 package models;
+import controllers.InventarioController;
 import views.MenuAlmacenista;
 
 public class Almacenista extends Usuario {
@@ -7,7 +8,7 @@ public class Almacenista extends Usuario {
     }
 
     @Override
-    public void mostrarMenu() {
-        new MenuAlmacenista().mostrarMenu();
+    public void mostrarMenu(InventarioController controller) {
+        new MenuAlmacenista(controller).mostrarMenu();
     }
 }

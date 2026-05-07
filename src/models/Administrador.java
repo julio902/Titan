@@ -1,4 +1,5 @@
 package models;
+import controllers.InventarioController;
 import views.MenuAdministrador;
 
 public class Administrador extends Usuario {
@@ -6,8 +7,8 @@ public class Administrador extends Usuario {
         super(user, correo, password, "administrador");
     }
     @Override
-    public void mostrarMenu() {
-        new MenuAdministrador().mostrar();
+    public void mostrarMenu(InventarioController controller) {
+        new MenuAdministrador(controller).mostrar();
     }
 }
 

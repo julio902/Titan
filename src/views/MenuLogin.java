@@ -60,16 +60,8 @@ public class MenuLogin {
                     System.out.println("\n✅ Bienvenido " + u.getUser());
                     loginExitoso = true;
 
-                    // 🔥 AQUÍ ESTÁ LA CLAVE
-                    if (u instanceof Administrador) {
-                        new MenuAdministrador(inventarioController).mostrar();
-                    } 
-                    else if (u instanceof Vendedor) {
-                        new MenuVendedor(inventarioController).mostrarMenu(u);
-                    } 
-                    else if (u instanceof Almacenista) {
-                        new MenuAlmacenista(inventarioController).mostrarMenu();
-                    }
+                    // 🔥 POLIMORFISMO: Cada usuario sabe qué menú mostrar
+                    u.mostrarMenu(inventarioController);
 
                     break;
 
