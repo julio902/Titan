@@ -1,7 +1,6 @@
 package views;
 
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import controllers.UsuarioController;
@@ -10,10 +9,10 @@ import models.Administrador;
 import models.Almacenista;
 import models.Usuario;
 import models.Vendedor;
+import utils.InputUtils;
 
 public class MenuAdministrador {
 
-    private final Scanner scanner = new Scanner(System.in);
     private final UsuarioController usuarioController = new UsuarioController();
     private final InventarioController inventarioController;
 
@@ -32,21 +31,15 @@ public class MenuAdministrador {
             System.out.println("[2] Listar usuarios");
             System.out.println("[3] Gestión de inventario 🔥");
             System.out.println("[0] Cerrar sesión");
-            System.out.print("Seleccione: ");
-
-            try {
-                opcion = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Ingrese un número válido.");
-                continue;
-            }
+            
+            opcion = InputUtils.leerEntero("Seleccione: ");
 
             switch (opcion) {
                 case 1 -> registrarUsuario();
                 case 2 -> mostrarUsuarios();
                 case 3 -> new MenuInventarioAdmin(inventarioController).mostrar(); // 🔥 SUBMENÚ
                 case 0 -> System.out.println("Cerrando sesión...");
-                default -> System.out.println("Opción no válida");
+                default -> System.out.println("❌ Opción no válida");
             }
 
         } while (opcion != 0);
@@ -88,24 +81,26 @@ public class MenuAdministrador {
 
         System.out.println("\n=== NUEVO USUARIO ===");
 
-        System.out.print("Usuario: ");
-        String user = scanner.nextLine();
+        String user = InputUtils.leerTexto("Usuario: ");
+        if (user.isEmpty()) {
+            System.out.println("❌ El nombre de usuario no puede estar vacío.");
+            return;
+        }
 
         String correo = user.trim().replace(" ", "").toLowerCase() + "@confectexctg.com";
 
         String password;
 
         do {
-            System.out.print("Contraseña: ");
-            password = scanner.nextLine();
+            password = InputUtils.leerTexto("Contraseña: ");
 
             if (!validarContrasena(password)) {
                 System.out.println("""
-                        Contraseña inválida:
+                        ❌ Contraseña inválida:
                         - Minúscula
                         - Mayúscula
                         - Número
-                        - Símbolo
+                        - Símbolo (@$!%*?&._-)
                         - Mínimo 8 caracteres
                         """);
             }
@@ -113,7 +108,7 @@ public class MenuAdministrador {
         } while (!validarContrasena(password));
 
         System.out.println("Rol: [1] Admin [2] Almacenista [3] Vendedor");
-        String opcion = scanner.nextLine();
+        String opcion = InputUtils.leerTexto("Seleccione: ");
 
         Usuario nuevo = null;
 
@@ -122,15 +117,15 @@ public class MenuAdministrador {
             case "2" -> nuevo = new Almacenista(user, correo, password);
             case "3" -> nuevo = new Vendedor(user, correo, password);
             default -> {
-                System.out.println("Rol inválido.");
+                System.out.println("❌ Rol inválido.");
                 return;
             }
         }
 
         if (usuarioController.registrarUsuario(nuevo)) {
-            System.out.println("Usuario creado correctamente.");
+            System.out.println("✅ Usuario creado correctamente. Correo: " + correo);
         } else {
-            System.out.println("El usuario ya existe.");
+            System.out.println("❌ El usuario o correo ya existe.");
         }
     }
-}
+}

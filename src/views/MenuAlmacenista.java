@@ -1,12 +1,10 @@
 package views;
 
-import java.util.Scanner;
-
 import controllers.InventarioController;
+import utils.InputUtils;
 
 public class MenuAlmacenista {
 
-    private final Scanner scanner = new Scanner(System.in);
     private final InventarioController inventarioController;
 
     // 🔥 IMPORTANTE: RECIBIR EL CONTROLLER
@@ -24,14 +22,8 @@ public class MenuAlmacenista {
             System.out.println("[2] Buscar producto");
             System.out.println("[3] Reponer stock 📦");
             System.out.println("[0] Salir");
-            System.out.print("Seleccione: ");
-
-            try {
-                opcion = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Entrada inválida.");
-                continue;
-            }
+            
+            opcion = InputUtils.leerEntero("Seleccione: ");
 
             switch (opcion) {
 
@@ -43,7 +35,7 @@ public class MenuAlmacenista {
 
                 case 0 -> System.out.println("Saliendo...");
 
-                default -> System.out.println("Opción inválida.");
+                default -> System.out.println("❌ Opción inválida.");
             }
 
         } while (opcion != 0);

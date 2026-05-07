@@ -1,12 +1,10 @@
 package views;
 
-import java.util.Scanner;
-
 import controllers.InventarioController;
+import utils.InputUtils;
 
 public class MenuInventarioAdmin {
 
-    private final Scanner scanner = new Scanner(System.in);
     private final InventarioController inventarioController;
 
     public MenuInventarioAdmin(InventarioController inventarioController) {
@@ -27,14 +25,8 @@ public class MenuInventarioAdmin {
             System.out.println("[6] Reponer stock");
             System.out.println("[7] Ver valor total del inventario");
             System.out.println("[0] Volver");
-            System.out.print("Seleccione: ");
-
-            try {
-                opcion = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Entrada inválida.");
-                continue;
-            }
+            
+            opcion = InputUtils.leerEntero("Seleccione: ");
 
             switch (opcion) {
 
@@ -52,12 +44,12 @@ public class MenuInventarioAdmin {
 
                 case 7 -> {
                     double total = inventarioController.calcularValorTotalInventario();
-                    System.out.println("Valor total del inventario: $" + total);
+                    System.out.println("💰 Valor total del inventario: $" + total);
                 }
 
                 case 0 -> System.out.println("Volviendo al menú administrador...");
 
-                default -> System.out.println("Opción inválida.");
+                default -> System.out.println("❌ Opción inválida.");
             }
 
         } while (opcion != 0);

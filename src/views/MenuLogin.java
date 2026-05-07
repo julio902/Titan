@@ -1,7 +1,5 @@
 package views;
 
-import java.util.Scanner;
-
 import controllers.UsuarioController;
 import controllers.InventarioController;
 import services.InventarioService;
@@ -9,10 +7,10 @@ import models.Usuario;
 import models.Administrador;
 import models.Vendedor;
 import models.Almacenista;
+import utils.InputUtils;
 
 public class MenuLogin {
 
-    private final Scanner scanner = new Scanner(System.in);
     private final UsuarioController usuarioController = new UsuarioController();
 
     // 🔥 UNA SOLA INSTANCIA (CLAVE)
@@ -29,8 +27,7 @@ public class MenuLogin {
             System.out.println("[3] Almacenista");
             System.out.println("[4] Salir");
 
-            System.out.print("Opción: ");
-            String opcion = scanner.nextLine();
+            String opcion = InputUtils.leerTexto("Opción: ");
 
             String rol = "";
 
@@ -43,26 +40,25 @@ public class MenuLogin {
                     return;
                 }
                 default -> {
-                    System.out.println("Opción inválida.\n");
+                    System.out.println("❌ Opción inválida.\n");
                     continue;
                 }
             }
 
             int intentos = 0;
+            boolean loginExitoso = false;
 
             while (intentos < 3) {
 
-                System.out.print("Usuario: ");
-                String user = scanner.nextLine();
-
-                System.out.print("Contraseña: ");
-                String pass = scanner.nextLine();
+                String user = InputUtils.leerTexto("Usuario (Correo): ");
+                String pass = InputUtils.leerTexto("Contraseña: ");
 
                 Usuario u = usuarioController.validarCredenciales(user, pass, rol);
 
                 if (u != null) {
 
-                    System.out.println("\nBienvenido " + u.getUser());
+                    System.out.println("\n✅ Bienvenido " + u.getUser());
+                    loginExitoso = true;
 
                     // 🔥 AQUÍ ESTÁ LA CLAVE
                     if (u instanceof Administrador) {
@@ -79,11 +75,13 @@ public class MenuLogin {
 
                 } else {
                     intentos++;
-                    System.out.println("Credenciales incorrectas (" + intentos + "/3)");
+                    System.out.println("❌ Credenciales incorrectas (" + intentos + "/3)");
                 }
             }
 
-            System.out.println("Demasiados intentos fallidos.");
+            if (!loginExitoso) {
+                System.out.println("⚠️ Demasiados intentos fallidos para este rol.");
+            }
         }
     }
-}
+}

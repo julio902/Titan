@@ -1,15 +1,14 @@
 package controllers;
 
 import java.util.List;
-import java.util.Scanner;
 
 import models.Producto;
 import services.InventarioService;
+import utils.InputUtils;
 
 public class InventarioController {
 
     private final InventarioService service;
-    private final Scanner scanner = new Scanner(System.in);
     
     public InventarioController(InventarioService service) {
         this.service = service;
@@ -25,44 +24,27 @@ public class InventarioController {
 
         String codigo = service.generarCodigo();
 
-        System.out.print("Nombre: ");
-        String nombre = scanner.nextLine().trim();
+        String nombre = InputUtils.leerTexto("Nombre: ");
         if (nombre.isEmpty()) {
             System.out.println("El nombre no puede estar vacío.");
             return;
         }
 
-        System.out.print("Descripción: ");
-        String descripcion = scanner.nextLine().trim();
+        String descripcion = InputUtils.leerTexto("Descripción: ");
         if (descripcion.isEmpty()) {
             System.out.println("La descripción no puede estar vacía.");
             return;
         }
 
-        int cantidad;
-        try {
-            System.out.print("Cantidad: ");
-            cantidad = Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Cantidad inválida.");
-            return;
-        }
-
-        double precio;
-        try {
-            System.out.print("Precio: ");
-            precio = Double.parseDouble(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Precio inválido.");
-            return;
-        }
+        int cantidad = InputUtils.leerEntero("Cantidad: ");
+        double precio = InputUtils.leerDecimal("Precio: ");
 
         Producto producto = new Producto(codigo, nombre, descripcion, cantidad, precio);
 
         if (service.agregarProducto(producto))
-            System.out.println("Producto agregado correctamente.");
+            System.out.println("✅ Producto agregado correctamente. Código asignado: " + codigo);
         else
-            System.out.println("Error al agregar producto.");
+            System.out.println("❌ Error al agregar producto.");
     }
 
     // ================================
@@ -92,8 +74,7 @@ public class InventarioController {
     // ================================
     public void buscarProducto() {
 
-        System.out.print("Buscar producto (nombre, código o desc): ");
-        String busqueda = scanner.nextLine().trim();
+        String busqueda = InputUtils.leerTexto("Buscar producto (nombre, código o desc): ");
 
         List<Producto> encontrados = service.buscarCoincidencias(busqueda);
 
@@ -112,8 +93,7 @@ public class InventarioController {
     // MÉTODO AUXILIAR: SELECCIONAR PRODUCTO
     // ================================
     private Producto seleccionarProducto() {
-        System.out.print("Ingrese búsqueda o código exacto: ");
-        String busqueda = scanner.nextLine().trim();
+        String busqueda = InputUtils.leerTexto("Ingrese búsqueda o código exacto: ");
 
         List<Producto> resultados = service.buscarCoincidencias(busqueda);
 
@@ -131,15 +111,10 @@ public class InventarioController {
         for (int i = 0; i < resultados.size(); i++) {
             System.out.println("[" + (i + 1) + "] " + resultados.get(i));
         }
-        System.out.print("Seleccione el número (o 0 para cancelar): ");
         
-        try {
-            int idx = Integer.parseInt(scanner.nextLine());
-            if (idx > 0 && idx <= resultados.size()) {
-                return resultados.get(idx - 1);
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Selección inválida.");
+        int idx = InputUtils.leerEntero("Seleccione el número (o 0 para cancelar): ");
+        if (idx > 0 && idx <= resultados.size()) {
+            return resultados.get(idx - 1);
         }
 
         return null;
@@ -157,33 +132,14 @@ public class InventarioController {
         System.out.println("\nModificando: " + p.getCodigo());
         System.out.println("Deje en blanco para mantener el valor actual.");
 
-        System.out.print("Nuevo nombre (" + p.getNombre() + "): ");
-        String nombre = scanner.nextLine().trim();
+        String nombre = InputUtils.leerTexto("Nuevo nombre (" + p.getNombre() + "): ");
         if (nombre.isEmpty()) nombre = p.getNombre();
 
-        System.out.print("Nueva descripción (" + p.getDescripcion() + "): ");
-        String desc = scanner.nextLine().trim();
+        String desc = InputUtils.leerTexto("Nueva descripción (" + p.getDescripcion() + "): ");
         if (desc.isEmpty()) desc = p.getDescripcion();
 
-        System.out.print("Nueva cantidad (" + p.getCantidad() + "): ");
-        String cantStr = scanner.nextLine().trim();
-        int cantidad;
-        try {
-            cantidad = cantStr.isEmpty() ? p.getCantidad() : Integer.parseInt(cantStr);
-        } catch (NumberFormatException e) {
-            System.out.println("Cantidad inválida. No se cambió el stock.");
-            cantidad = p.getCantidad();
-        }
-
-        System.out.print("Nuevo precio (" + p.getPrecio() + "): ");
-        String precioStr = scanner.nextLine().trim();
-        double precio;
-        try {
-            precio = precioStr.isEmpty() ? p.getPrecio() : Double.parseDouble(precioStr);
-        } catch (NumberFormatException e) {
-            System.out.println("Precio inválido. No se cambió el precio.");
-            precio = p.getPrecio();
-        }
+        int cantidad = InputUtils.leerEnteroOpcional("Nueva cantidad (" + p.getCantidad() + "): ", p.getCantidad());
+        double precio = InputUtils.leerDecimalOpcional("Nuevo precio (" + p.getPrecio() + "): ", p.getPrecio());
 
         boolean ok = service.modificarProducto(
                 p.getCodigo(), nombre, desc, cantidad, precio
@@ -203,8 +159,7 @@ public class InventarioController {
 
         if (p == null) return;
 
-        System.out.println("¿Está seguro de eliminar el producto: " + p.getNombre() + "? (S/N)");
-        String confirm = scanner.nextLine().trim().toLowerCase();
+        String confirm = InputUtils.leerTexto("¿Está seguro de eliminar el producto: " + p.getNombre() + "? (S/N): ").toLowerCase();
 
         if (confirm.equals("s")) {
             if (service.eliminarProducto(p.getCodigo()))
@@ -217,7 +172,7 @@ public class InventarioController {
     }
 
     // ================================
-    // VENDER PRODUCTO 🔥
+    // VENDER PRODUCTO 
     // ================================
     public void venderProducto() {
 
@@ -226,14 +181,7 @@ public class InventarioController {
 
         System.out.println("Producto: " + p.getNombre() + " (Stock: " + p.getCantidad() + ")");
         
-        int cantidad;
-        try {
-            System.out.print("Cantidad a vender: ");
-            cantidad = Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Cantidad inválida.");
-            return;
-        }
+        int cantidad = InputUtils.leerEntero("Cantidad a vender: ");
 
         if (service.venderProducto(p.getCodigo(), cantidad))
             System.out.println("✅ Venta realizada.");
@@ -251,21 +199,15 @@ public class InventarioController {
 
         System.out.println("Producto: " + p.getNombre() + " (Stock actual: " + p.getCantidad() + ")");
 
-        int cantidad;
-        try {
-            System.out.print("Cantidad a reponer: ");
-            cantidad = Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Cantidad inválida.");
-            return;
-        }
+        int cantidad = InputUtils.leerEntero("Cantidad a reponer: ");
 
         if (service.reponerProducto(p.getCodigo(), cantidad))
             System.out.println("✅ Stock actualizado.");
         else
             System.out.println("❌ Error al actualizar stock.");
     }
-        public double calcularValorTotalInventario() {
-            return service.calcularValorTotalInventario();
+
+    public double calcularValorTotalInventario() {
+        return service.calcularValorTotalInventario();
     }
 }

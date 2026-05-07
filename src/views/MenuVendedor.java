@@ -1,13 +1,11 @@
 package views;
 
-import java.util.Scanner;
-
 import controllers.InventarioController;
 import models.Usuario;
+import utils.InputUtils;
 
 public class MenuVendedor {
 
-    private final Scanner scanner = new Scanner(System.in);
     private final InventarioController inventarioController;
 
     // 🔥 IMPORTANTE: RECIBIR EL CONTROLLER
@@ -25,14 +23,8 @@ public class MenuVendedor {
             System.out.println("[2] Buscar producto");
             System.out.println("[3] Vender producto 🧾");
             System.out.println("[0] Cerrar sesión");
-            System.out.print("Opción: ");
-
-            try {
-                opcion = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Entrada inválida.");
-                continue;
-            }
+            
+            opcion = InputUtils.leerEntero("Opción: ");
 
             switch (opcion) {
 
@@ -44,12 +36,11 @@ public class MenuVendedor {
 
                 case 0 -> System.out.println("Cerrando sesión...");
 
-                default -> System.out.println("Opción inválida.");
+                default -> System.out.println("❌ Opción inválida.");
             }
 
         } while (opcion != 0);
 
-        // 🔥 NO CREAR OTRO LOGIN
         System.out.println("Regresando al inicio...");
     }
 }
