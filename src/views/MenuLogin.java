@@ -1,12 +1,9 @@
 package views;
 
-import controllers.UsuarioController;
 import controllers.InventarioController;
-import services.InventarioService;
+import controllers.UsuarioController;
 import models.Usuario;
-import models.Administrador;
-import models.Vendedor;
-import models.Almacenista;
+import services.InventarioService;
 import utils.InputUtils;
 
 public class MenuLogin {
@@ -76,4 +73,4 @@ public class MenuLogin {
             }
         }
     }
-}
+}
