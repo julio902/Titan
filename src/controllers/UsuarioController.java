@@ -20,10 +20,10 @@ public class UsuarioController {
     public List<Usuario> obtenerUsuarios() {
         return usuarioService.listarUsuarios();
     }
-
-    public void listarUsuarios() {
-        for (Usuario u : usuarioService.listarUsuarios()) {
-            System.out.println(u);
-        }
+    public boolean eliminarUsuario(String user) {
+        return usuarioService.eliminarUsuario(user);
     }
+
+    
+    
 }

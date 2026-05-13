@@ -8,68 +8,139 @@ import utils.InputUtils;
 
 public class MenuLogin {
 
-    private final UsuarioController usuarioController = new UsuarioController();
+    private final UsuarioController usuarioController =
+            new UsuarioController();
 
-    // 🔥 UNA SOLA INSTANCIA (CLAVE)
-    private final InventarioService inventarioService = new InventarioService();
-    private final InventarioController inventarioController = new InventarioController(inventarioService);
+    // =========================================
+    // UNA SOLA INSTANCIA DEL INVENTARIO
+    // =========================================
+    private final InventarioService inventarioService =
+            new InventarioService();
 
+    private final InventarioController inventarioController =
+            new InventarioController(inventarioService);
+
+    // =========================================
+    // LOGIN PRINCIPAL
+    // =========================================
     public void mostrarLogin() {
 
         while (true) {
 
-            System.out.println("\n=== SISTEMA DE INVENTARIO CONFECTEX CARTAGENA ===");
+            System.out.println(
+                    "\n=== SISTEMA DE INVENTARIO CONFECTEX CARTAGENA ==="
+            );
+
             System.out.println("[1] Administrador");
             System.out.println("[2] Vendedor");
             System.out.println("[3] Almacenista");
             System.out.println("[4] Salir");
 
-            String opcion = InputUtils.leerTexto("Opción: ");
+            String opcion =
+                    InputUtils.leerTexto("Opción: ");
 
             String rol = "";
 
             switch (opcion) {
+
                 case "1" -> rol = "administrador";
+
                 case "2" -> rol = "vendedor";
+
                 case "3" -> rol = "almacenista";
+
                 case "4" -> {
+
                     System.out.println("Saliendo...");
                     return;
                 }
+
                 default -> {
-                    System.out.println("❌ Opción inválida.\n");
+
+                    System.out.println(
+                            "❌ Opción inválida.\n"
+                    );
+
                     continue;
                 }
             }
 
             int intentos = 0;
+
             boolean loginExitoso = false;
 
             while (intentos < 3) {
 
-                String user = InputUtils.leerTexto("Usuario (Correo): ");
-                String pass = InputUtils.leerTexto("Contraseña: ");
+                String user =
+                        InputUtils.leerTexto(
+                                "Usuario (Correo): "
+                        );
 
-                Usuario u = usuarioController.validarCredenciales(user, pass, rol);
+                String pass =
+                        InputUtils.leerTexto(
+                                "Contraseña: "
+                        );
+
+                Usuario u =
+                        usuarioController.validarCredenciales(
+                                user,
+                                pass,
+                                rol
+                        );
 
                 if (u != null) {
 
-                    System.out.println("\n✅ Bienvenido " + u.getUser());
+                    System.out.println(
+                            "\n✅ Bienvenido "
+                            + u.getUser()
+                    );
+
                     loginExitoso = true;
 
-                    // 🔥 POLIMORFISMO: Cada usuario sabe qué menú mostrar
-                    u.mostrarMenu(inventarioController);
+                    // =====================================
+                    // MOSTRAR MENÚ SEGÚN ROL
+                    // =====================================
+
+                    switch (rol.toLowerCase()) {
+
+                        case "administrador" ->
+
+                            new MenuAdministrador(
+                                    inventarioController
+                            ).mostrar();
+
+                        case "vendedor" ->
+
+                            new MenuVendedor(
+                                    inventarioController
+                            ).mostrarMenu(u);
+
+                        case "almacenista" ->
+
+                            new MenuAlmacenista(
+                                    inventarioController
+                            ).mostrarMenu();
+                    }
 
                     break;
 
                 } else {
+
                     intentos++;
-                    System.out.println("❌ Credenciales incorrectas (" + intentos + "/3)");
+
+                    System.out.println(
+                            "❌ Credenciales incorrectas ("
+                            + intentos
+                            + "/3)"
+                    );
                 }
             }
 
             if (!loginExitoso) {
-                System.out.println("⚠️ Demasiados intentos fallidos para este rol.");
+
+                System.out.println(
+                        "⚠️ Demasiados intentos fallidos para este rol."
+                );
             }
         }
     }
