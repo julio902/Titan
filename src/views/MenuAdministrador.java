@@ -5,16 +5,23 @@ import java.util.regex.Pattern;
 
 import controllers.InventarioController;
 import controllers.UsuarioController;
+import controllers.VentaController;
 import models.Administrador;
 import models.Almacenista;
 import models.Usuario;
 import models.Vendedor;
+import models.Venta;
 import utils.InputUtils;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class MenuAdministrador {
 
     private final UsuarioController usuarioController = new UsuarioController();
     private final InventarioController inventarioController;
+    private final VentaController ventaController = new VentaController();
 
     // ======================================
     // CONSTRUCTOR
@@ -37,6 +44,7 @@ public class MenuAdministrador {
             System.out.println("[2] Listar usuarios");
             System.out.println("[3] Eliminar usuario");
             System.out.println("[4] Gestión de inventario 🔥");
+            System.out.println("[5] Resumen de ventas totales 📊");
             System.out.println("[0] Cerrar sesión");
 
             opcion = InputUtils.leerEntero("Seleccione: ");
@@ -52,6 +60,8 @@ public class MenuAdministrador {
                 case 4 -> new MenuInventarioAdmin(
                         inventarioController
                 ).mostrar();
+
+                case 5 -> mostrarResumenVentas();
 
                 case 0 -> System.out.println("Cerrando sesión...");
 
@@ -255,5 +265,59 @@ public class MenuAdministrador {
                     "❌ El usuario o correo ya existe."
             );
         }
+    }
+
+    // ======================================
+    // MOSTRAR RESUMEN DE VENTAS TOTALES
+    // ======================================
+    private void mostrarResumenVentas() {
+        List<Venta> todasLasVentas = ventaController.obtenerVentas();
+
+        if (todasLasVentas.isEmpty()) {
+            System.out.println("\n❌ No hay ventas registradas en el sistema.");
+            return;
+        }
+
+        // Agrupar ventas por número de factura
+        Map<String, List<Venta>> ventasAgrupadas = new LinkedHashMap<>();
+        for (Venta v : todasLasVentas) {
+            ventasAgrupadas
+                .computeIfAbsent(v.getNumeroVenta(), k -> new ArrayList<>())
+                .add(v);
+        }
+
+        System.out.println("\n========================================================");
+        System.out.println("            RESUMEN GLOBAL DE VENTAS (ADMIN)            ");
+        System.out.println("========================================================");
+
+        double granTotalSistema = 0;
+
+        for (Map.Entry<String, List<Venta>> entry : ventasAgrupadas.entrySet()) {
+            String numFactura = entry.getKey();
+            List<Venta> items = entry.getValue();
+            Venta primera = items.get(0);
+
+            System.out.println("\nFACTURA #: " + numFactura + " | Vendedor: " + primera.getVendedor());
+            System.out.println("Cliente  : " + primera.getNombreCliente() + " (" + primera.getCedulaCliente() + ")");
+            System.out.println("--------------------------------------------------------");
+            System.out.printf("%-25s %-10s %-10s\n", "Producto", "Cant.", "Subtotal");
+            System.out.println("--------------------------------------------------------");
+
+            double totalFactura = 0;
+            for (Venta item : items) {
+                System.out.printf("%-25s %-10d $%-10.2f\n", 
+                    item.getProducto(), 
+                    item.getCantidad(), 
+                    item.getTotal());
+                totalFactura += item.getTotal();
+            }
+
+            System.out.println("--------------------------------------------------------");
+            System.out.printf("%-36s $%-10.2f\n", "TOTAL FACTURA:", totalFactura);
+            System.out.println("========================================================");
+            granTotalSistema += totalFactura;
+        }
+
+        System.out.println("\n>>> TOTAL RECAUDADO EN EL SISTEMA: $" + granTotalSistema + " <<<");
     }
 }

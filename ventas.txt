@@ -1,0 +1,7 @@
+V-001,Vendedor,1047472616,bryan orozco dumet,3123831500,CAMISETA POLO CUELLO V,3,240000.0
+V-002,Vendedor,1047472616,brayan orozco dumet,3123831500,CAMISETA POLO CUELLO V,3,240000.0
+V-002,Vendedor,1047472616,brayan orozco dumet,3123831500,sueter polo,3,180000.0
+V-003,anderson orozco,26086480,blanca rosa dumet,3145842520,sueter polo,9,540000.0
+V-003,anderson orozco,26086480,blanca rosa dumet,3145842520,CAMISETA POLO CUELLO V,6,480000.0
+V-004,anderson orozco,26086480,blanca rosa dumet solar,3145896874,CAMISETA POLO CUELLO V,6,480000.0
+V-004,anderson orozco,26086480,blanca rosa dumet solar,3145896874,sueter polo,9,540000.0
