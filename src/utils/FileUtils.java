@@ -31,7 +31,8 @@ public class FileUtils {
                     p.getNombre() + ";" +
                     p.getDescripcion() + ";" +
                     p.getCantidad() + ";" +
-                    p.getPrecio()
+                    p.getValorCompra() + ";" +
+                    p.getValorVenta()
                 );
                 writer.newLine();
             }
@@ -50,13 +51,14 @@ public class FileUtils {
             while ((linea = reader.readLine()) != null) {
                 if (linea.trim().isEmpty()) continue;
                 String[] datos = linea.split(";");
-                if (datos.length == 5) {
+                if (datos.length == 6) {
                     productos.add(new Producto(
                         datos[0], // codigo
                         datos[1], // nombre
                         datos[2], // descripcion
                         Integer.parseInt(datos[3]), // cantidad
-                        Double.parseDouble(datos[4]) // precio
+                        Double.parseDouble(datos[4]), // valorCompra
+                        Double.parseDouble(datos[5]) // valorVenta
                     ));
                 }
             }

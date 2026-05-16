@@ -1,3 +1,6 @@
-PRD-002;CAMISETA POLO CUELLO V;tela polar en lana, compasicion 100% poliestermanga corta con pu�os tejidos multicolor;12;80000.0
-PRD-004;sueter polo;sueter polo de algodon mangas corta y cuello en v;24;60000.0
-PRD-005;zapto;azul;48;80000.0
+PRD-002;CAMISETA POLO CUELLO V;tela polar en lana, compasicion 100% poliestermanga corta con puños tejidos multicolor;12;80000.0;120000.0
+PRD-004;sueter polo;sueter polo de algodon mangas corta y cuello en v;24;60000.0;90000.0
+PRD-005;zapto;azul;48;80000.0;110000.0
+PRD-006;gorra;nike color rojo horma basica;50;90000.0;130000.0
+PRD-007;zapato mujer;color fucsia con tirante;50;60000.0;85000.0
+PRD-008;qwerty;teclado;50;20.0;50.0

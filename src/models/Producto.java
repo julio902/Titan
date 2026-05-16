@@ -5,14 +5,16 @@ public class Producto {
     private String nombre;
     private String descripcion;
     private int cantidad;
-    private double precio;
+    private double valorCompra;
+    private double valorVenta;
 
-    public Producto(String codigo, String nombre,String descripcion, int cantidad, double precio) {
+    public Producto(String codigo, String nombre,String descripcion, int cantidad, double valorCompra, double valorVenta) {
         this.codigo = codigo;
         setNombre(nombre);
         setDescripcion(descripcion);
         setCantidad(cantidad);
-        setPrecio(precio);
+        setValorCompra(valorCompra);
+        setValorVenta(valorVenta);
     }
 
     // Getters para acceder a los datos
@@ -32,8 +34,12 @@ public class Producto {
         return cantidad;
     }
 
-    public double getPrecio() {
-        return precio;
+    public double getValorCompra() {
+        return valorCompra;
+    }
+
+    public double getValorVenta() {
+        return valorVenta;
     }
 
     // Setters para modificar los datos la guardados en la lista 
@@ -55,11 +61,18 @@ public class Producto {
     this.cantidad = cantidad;
 }
 
-    public void setPrecio(double precio) {
-        if (precio < 0) {
-            throw new IllegalArgumentException("El precio no puede ser negativo");
+    public void setValorCompra(double valorCompra) {
+        if (valorCompra < 0) {
+            throw new IllegalArgumentException("El valor de compra no puede ser negativo");
         }
-        this.precio = precio;
+        this.valorCompra = valorCompra;
+    }
+
+    public void setValorVenta(double valorVenta) {
+        if (valorVenta < 0) {
+            throw new IllegalArgumentException("El valor de venta no puede ser negativo");
+        }
+        this.valorVenta = valorVenta;
     }
      // Comportamiento POO vender y reponer productos, calcular valor del inventario
     public void vender(int cantidadVendida) {
@@ -77,13 +90,13 @@ public class Producto {
     }
 
     public double calcularValorInventario() {
-        return cantidad * precio;
+        return cantidad * valorCompra;
     }
 
 
     @Override
     public String toString() {
-       return String.format("%s - %s | %s | Cant: %d | $%.2f",
-                codigo, nombre, descripcion, cantidad, precio);
+       return String.format("%s - %s | %s | Cant: %d | Costo: $%.2f | Venta: $%.2f",
+                codigo, nombre, descripcion, cantidad, valorCompra, valorVenta);
     }
 }

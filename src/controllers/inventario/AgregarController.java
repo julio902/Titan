@@ -28,9 +28,10 @@ public class AgregarController extends InventarioBaseController {
         }
 
         int cantidad = InputUtils.leerEntero("Cantidad: ");
-        double precio = InputUtils.leerDecimal("Precio: ");
+        double valorCompra = InputUtils.leerDecimal("Valor: ");
+        double valorVenta = InputUtils.leerDecimal("Valor de venta: ");
 
-        Producto producto = new Producto(codigo, nombre, descripcion, cantidad, precio);
+        Producto producto = new Producto(codigo, nombre, descripcion, cantidad, valorCompra, valorVenta);
 
         if (service.agregarProducto(producto))
             System.out.println("✅ Producto agregado correctamente. Código asignado: " + codigo);

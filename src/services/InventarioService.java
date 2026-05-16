@@ -121,7 +121,7 @@ public class InventarioService {
     // ==============================================
     // MODIFICAR PRODUCTO (USANDO POO)
     // ==============================================
-    public boolean modificarProducto(String codigo, String nuevoNombre, String nuevaDescripcion, int nuevaCantidad, double nuevoPrecio) {
+    public boolean modificarProducto(String codigo, String nuevoNombre, String nuevaDescripcion, int nuevaCantidad, double nuevoValorCompra, double nuevoValorVenta) {
 
         Producto p = buscarProductoPorCodigo(codigo);
 
@@ -139,7 +139,8 @@ public class InventarioService {
                 p.vender(-diferencia);
             }
 
-            p.setPrecio(nuevoPrecio);
+            p.setValorCompra(nuevoValorCompra);
+            p.setValorVenta(nuevoValorVenta);
 
             FileUtils.guardarProductos(productos);
             return true;

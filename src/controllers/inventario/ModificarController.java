@@ -24,9 +24,10 @@ public class ModificarController extends InventarioBaseController {
         if (desc.isEmpty()) desc = p.getDescripcion();
 
         int cantidad = InputUtils.leerEnteroOpcional("Nueva cantidad (" + p.getCantidad() + "): ", p.getCantidad());
-        double precio = InputUtils.leerDecimalOpcional("Nuevo precio (" + p.getPrecio() + "): ", p.getPrecio());
+        double valorCompra = InputUtils.leerDecimalOpcional("Nuevo valor compra (" + p.getValorCompra() + "): ", p.getValorCompra());
+        double valorVenta = InputUtils.leerDecimalOpcional("Nuevo valor venta (" + p.getValorVenta() + "): ", p.getValorVenta());
 
-        boolean ok = service.modificarProducto(p.getCodigo(), nombre, desc, cantidad, precio);
+        boolean ok = service.modificarProducto(p.getCodigo(), nombre, desc, cantidad, valorCompra, valorVenta);
 
         if (ok)
             System.out.println("✅ Producto modificado correctamente.");

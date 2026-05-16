@@ -136,7 +136,7 @@ public class MenuVendedor {
             for (int i = 0; i < productos.size(); i++) {
                 Producto p = productos.get(i);
                 System.out.println("[" + (i + 1) + "] " + p.getNombre() + 
-                    " | Stock: " + p.getCantidad() + " | Precio: $" + p.getPrecio());
+                    " | Stock: " + p.getCantidad() + " | Precio: $" + p.getValorVenta());
             }
 
             int opcionProducto = InputUtils.leerEntero("\nSeleccione producto: ");
@@ -157,7 +157,7 @@ public class MenuVendedor {
                 if ((cantidad + cantidadEnCarrito) > producto.getCantidad()) {
                     System.out.println("❌ Stock insuficiente.");
                 } else {
-                    double subtotal = cantidad * producto.getPrecio();
+                    double subtotal = cantidad * producto.getValorVenta();
                     // Agregamos al carrito (el número de venta se asignará al final)
                     carrito.add(new Venta(
                         "", // Temporal
