@@ -5,3 +5,4 @@ V-003,anderson orozco,26086480,blanca rosa dumet,3145842520,sueter polo,9,540000
 V-003,anderson orozco,26086480,blanca rosa dumet,3145842520,CAMISETA POLO CUELLO V,6,480000.0
 V-004,anderson orozco,26086480,blanca rosa dumet solar,3145896874,CAMISETA POLO CUELLO V,6,480000.0
 V-004,anderson orozco,26086480,blanca rosa dumet solar,3145896874,sueter polo,9,540000.0
+V-005,Vendedor,1042577110,lineth espitaleta,3214569877,zapto,2,160000.0
